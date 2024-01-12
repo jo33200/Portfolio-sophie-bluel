@@ -37,6 +37,11 @@ function afficherImagesSurInterface(works) {
         const img=document.createElement("img");
         img.src=work.imageUrl
         articleElement.appendChild(img)
+
+        // ajout du title de l'image
+        const title=document.createElement("h3")
+        title.textContent=work.title
+        articleElement.appendChild(title)
     });
 }
 

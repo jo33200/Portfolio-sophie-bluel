@@ -132,11 +132,14 @@ li:hover {
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
 }
-
 .gallery img {
 	width: 100%;
-
 }
+h3{
+	margin-top: 5px;
+	font-size: 13px;
+}
+
 #contact {
 	width: 50%;
 margin: auto;
