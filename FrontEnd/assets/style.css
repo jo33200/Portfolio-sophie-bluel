@@ -267,7 +267,19 @@ footer nav ul {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 	cursor: pointer;
 }
-#login p{
+.forgetPassword{
 	text-decoration: underline;
 	text-underline-offset: 2px;
+}
+.erreurEmail{
+	color: red;
+	font-weight: bold;
+	margin-top: 10px;
+	display: none;
+}
+.erreurMotdepasse{
+	color: red;
+	font-weight: bold;
+	margin-top: 10px;
+	display: none;
 }
