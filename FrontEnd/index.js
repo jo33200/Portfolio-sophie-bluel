@@ -142,7 +142,11 @@ const filtersRemove = document.querySelector("#filters");
 // Récupérez le conteneur des nouveaux éléments
 const titlePortfolio = document.getElementById("portfolio");
 const bannerEdit = document.querySelector(".bannerEdit")
+
+// ajouts au DOM
 const projectTitle = document.querySelector(".titreProjet")
+
+
 
 // condition de vérification du login
 if (token){
@@ -160,6 +164,9 @@ function displayAdmin() {
     bannerEdit.style.display="flex";
     
     // Créez de nouveaux éléments
+    const divTitreProjet = document.createElement("div");
+    divTitreProjet.classList.add("titreLoginProjet")
+
     const modifyButton = document.createElement("button");
     modifyButton.classList.add("modify");
 
@@ -170,7 +177,13 @@ function displayAdmin() {
     textModify.textContent = "modifier";
 
     // Ajoutez le nouveau paragraphe au conteneur
-    titlePortfolio.appendChild(modifyButton);
+
+    titlePortfolio.appendChild(divTitreProjet);
+    titlePortfolio.insertBefore(divTitreProjet, titlePortfolio.firstChild);
+    
+    divTitreProjet.appendChild(projectTitle);
+    divTitreProjet.appendChild(modifyButton);
+    
     modifyButton.appendChild(editIcone);
     modifyButton.appendChild(textModify)
     

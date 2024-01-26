@@ -114,12 +114,28 @@ h2{
 	color: white;
 	font-size: 15.58px;
 }
+
+.titreLoginProjet{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin-left: 20px;
+	margin-bottom: 50px;
+	padding-top: 50px;
+}
 .modify{
 	background-color: white;
 	border: none;
+	margin-bottom: 1em;
+}
+.modify i{
+	font-size: 15px;
+	color: black;
 }
 
 
+/*-------------------------------------------------------------------------*/
 
 #headMenu {
 	display: flex;
@@ -171,10 +187,6 @@ nav a{
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
-}
-.modify{
-	background-color: white;
-	border: none;
 }
 #filters{
 	width: 100%;
