@@ -1,3 +1,7 @@
+//-----------------------------------------USER--------------------------------------------------
+
+
+
 // -------------------------------------------------------- Variables globales
 
 const conteneurImages = document.querySelector(".gallery");
@@ -117,3 +121,50 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Filtrer les images par catégorie :", category);
     }
 });
+
+
+
+//-------------------------------------ADMIN---------------------------------------------------
+
+
+
+//---------------------------------------------------------Display admin
+
+let token = localStorage.getItem("Token")
+
+//faire disparaitre les filters
+const filtersRemove = document.querySelector("#filters");
+
+// Récupérez le conteneur des nouveaux éléments
+const titlePortfolio = document.getElementById("portfolio");
+
+const bannerEdit = document.querySelector(".bannerEdit")
+
+if (token){
+    displayAdmin()
+}
+
+
+
+function displayAdmin() {
+    
+        
+        // Créez de nouveaux éléments
+        const modifyButton = document.createElement("button");
+        modifyButton.classList.add("modify");
+
+        const editIcone = document.createElement("i");
+        editIcone.classList.add = "fa-regular fa-pen-to-square";
+
+        const textModify = document.createElement("p");
+        textModify.textContent = "modifier";
+
+        // Ajoutez le nouveau paragraphe au conteneur
+        titlePortfolio.appendChild(modifyButton);
+        modifyButton.appendChild(editIcone);
+        modifyButton.appendChild(textModify)
+    
+}
+
+// Appelez la fonction pour ajouter les nouveaux éléments au chargement de la page
+displayAdmin();
