@@ -130,6 +130,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //---------------------------------------------------------Display admin
 
+
+//-----------------------Variable générales
+
+// récupérer le token dans le stockage local
 let token = localStorage.getItem("Token")
 
 //faire disparaitre les filters
@@ -137,9 +141,10 @@ const filtersRemove = document.querySelector("#filters");
 
 // Récupérez le conteneur des nouveaux éléments
 const titlePortfolio = document.getElementById("portfolio");
-
 const bannerEdit = document.querySelector(".bannerEdit")
+const projectTitle = document.querySelector(".titreProjet")
 
+// condition de vérification du login
 if (token){
     displayAdmin()
 }
@@ -148,23 +153,25 @@ if (token){
 
 function displayAdmin() {
     
-        
-        // Créez de nouveaux éléments
-        const modifyButton = document.createElement("button");
-        modifyButton.classList.add("modify");
+    // faire disparaitre les filtres
+    document.querySelector("#filters").style.display = "none";
 
-        const editIcone = document.createElement("i");
-        editIcone.classList.add = "fa-regular fa-pen-to-square";
+    // faire apparaitre les éléments créé dans index.html
+    bannerEdit.style.display="flex";
+    
+    // Créez de nouveaux éléments
+    const modifyButton = document.createElement("button");
+    modifyButton.classList.add("modify");
 
-        const textModify = document.createElement("p");
-        textModify.textContent = "modifier";
+    const editIcone = document.createElement("i");
+    editIcone.classList.add = "fa-regular fa-pen-to-square";
 
-        // Ajoutez le nouveau paragraphe au conteneur
-        titlePortfolio.appendChild(modifyButton);
-        modifyButton.appendChild(editIcone);
-        modifyButton.appendChild(textModify)
+    const textModify = document.createElement("p");
+    textModify.textContent = "modifier";
+
+    // Ajoutez le nouveau paragraphe au conteneur
+    titlePortfolio.appendChild(modifyButton);
+    modifyButton.appendChild(editIcone);
+    modifyButton.appendChild(textModify)
     
 }
-
-// Appelez la fonction pour ajouter les nouveaux éléments au chargement de la page
-displayAdmin();

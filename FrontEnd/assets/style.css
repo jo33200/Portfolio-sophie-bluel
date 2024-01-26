@@ -55,8 +55,9 @@ body {
 }
 header {
 	display: flex;
+	flex-direction: column;
 	justify-content: space-between;
-	margin: 50px 0
+	
 }
 section {
 	margin: 50px 0
@@ -84,13 +85,46 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
+/*---------------------------------Modification edit mode ---------------------------*/
 .bannerEdit{
 	background-color: black;
 	display: none;
 	align-items: center;
+	justify-content: center;
+	height: 59px;
+	margin: 0px;
+	width: 300%;
+	margin-left: calc(-1vh - 100%);
+
 }
 .bannerEdit p{
 	color: white;
+	font-size: 16px;
+	font-family: 'Work Sans', sans-serif;
+	
+}
+.bannerEdit button{
+	display: flex;
+	background-color: black;
+	gap: 20px;
+	border: none;
+}
+.bannerEdit i{
+	color: white;
+	font-size: 15.58px;
+}
+.modify{
+	background-color: white;
+	border: none;
+}
+
+
+
+#headMenu {
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 0
 }
 nav ul {
 	display: flex;
@@ -137,6 +171,10 @@ nav a{
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
+}
+.modify{
+	background-color: white;
+	border: none;
 }
 #filters{
 	width: 100%;
