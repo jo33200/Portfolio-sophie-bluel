@@ -52,6 +52,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	position: relative;
 }
 header {
 	display: flex;
@@ -134,6 +135,91 @@ h2{
 	color: black;
 }
 
+
+/*------------------------------------ Modal---------------------------------*/
+
+.modal{
+    width: 200%;
+    height: 120%;
+    position: absolute;
+    top: -59px;
+    left: -50%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+	
+}
+
+.windowModal{
+	width: 630px;
+    height: 688px;
+	top: 10%;
+	
+	margin-top: calc(100% - 70%);
+	margin-left: calc(100% - 60%);
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+	position: static;
+    z-index: 3; 
+	
+}
+.windowModal i{
+    font-size: 24px;
+    color: black;
+    margin-left: 580px;
+    margin-top: 20px;
+    opacity: 1;
+	cursor: pointer;
+}
+.projectImg{
+    width: 80%;
+    height: 50%;
+    padding: 20px 0px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: 10px;
+	grid-row-gap: 10px;
+}
+.projectImg img{
+	width: 100%;
+}
+h3{
+    font-size: 26px;
+    color: black;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-family: 'Work Sans';
+}
+
+.separLine {
+    height: 2px;
+    background-color: #B3B3B3;
+    width: 70%;
+    margin: 10px 0px;
+}
+.windowModal button{
+    background-color:#1D6154;
+    border-radius: 30px;
+    color: white;
+    border: none;
+    width: 237px;
+    height: 36px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	cursor: pointer;
+}
+.windowModal p{
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Syne';
+}
 
 /*-------------------------------------------------------------------------*/
 
