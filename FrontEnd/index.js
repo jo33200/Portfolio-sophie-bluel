@@ -149,7 +149,10 @@ const projectTitle = document.querySelector(".titreProjet")
 
 
 // condition de vérification du login
-if (token){
+const storedToken = localStorage.getItem("Token");
+const TokenExpiration = localStorage.getItem("TokenExpiration");
+
+if (storedToken && TokenExpiration && Date.now() < TokenExpiration){
     displayAdmin()
 }
 

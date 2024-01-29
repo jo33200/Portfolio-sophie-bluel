@@ -48,7 +48,15 @@
         //stocker le token dans le stockage local => rediriger vers l'index.html
         let token=data.token
         if (token){
+
+            // Calculer le timestamp d'expiration (par exemple, 1 heure à partir de maintenant)
+            const expirationTime = Date.now() + 60*60*1000;// 1 heure en millisecondes
+            
+            // Stocker le token et le timestamp d'expiration dans le local storage
             localStorage.setItem("Token", token)
+            localStorage.setItem("TokenExpiration", expirationTime)
+
+            // Rediriger vers "index.html"
             window.location.replace("index.html")
         }else{ //si pas de token message d'erreur de connection
             const erreurPassword=document.querySelector(".erreurMotdepasse")
