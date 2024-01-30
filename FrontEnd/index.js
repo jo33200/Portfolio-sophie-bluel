@@ -197,6 +197,7 @@ function displayAdmin() {
 //------------------------------------------------------ Modal
 
 //faire apparaitre la modal avec l'évènement clic sur bouton modifier
+const boutonModifier = document.querySelector(".modify")
 
 //afficher les img dans la modal
 function afficherImagesDansModal(works){
@@ -234,5 +235,3 @@ function afficherImagesDansModal(works){
 // Appeler la fonction pour récupérer et afficher les images
 recupererImagesDepuisAPI();
 
-//ajouter l'icone de suppression sur chaque img
-//

@@ -157,7 +157,7 @@ h2{
     z-index: 2;
     align-items: center;
     justify-content: center;
-	display: none;
+	
 	
 }
 
@@ -211,10 +211,13 @@ h2{
 	background-color: black;
 	border-radius: 5px;
 }
-.fa-trash-can{
+
+.fas.fa-trash-can{
 	color: white;
+	font-size: 12px;
 	position: absolute;
-	
+	right: 9.5px;
+	top: -11px;
 }
 
 h4{
