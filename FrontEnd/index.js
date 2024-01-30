@@ -190,14 +190,26 @@ function displayAdmin() {
     divTitreProjet.appendChild(modifyButton);
     
     modifyButton.appendChild(editIcone);
-    modifyButton.appendChild(textModify)
+    modifyButton.appendChild(textModify);
     
 }
 
 //------------------------------------------------------ Modal
 
 //faire apparaitre la modal avec l'évènement clic sur bouton modifier
-const boutonModifier = document.querySelector(".modify")
+const modifyButton = document.querySelector(".modify")
+const modalElement = document.querySelector(".modal")
+
+modifyButton.addEventListener("click", () => {
+    modalElement.style.display="block";
+} )
+
+//faire disparaitre la modal
+const deleteButton = document.querySelector(".fa-xmark")
+
+deleteButton.addEventListener("click",() =>{
+    modalElement.style.display = "none";
+} )
 
 //afficher les img dans la modal
 function afficherImagesDansModal(works){
