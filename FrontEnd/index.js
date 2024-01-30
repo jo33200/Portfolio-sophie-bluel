@@ -5,6 +5,7 @@
 // -------------------------------------------------------- Variables globales
 
 const conteneurImages = document.querySelector(".gallery");
+const modalContent = document.querySelector(".projectImg");
 
 
 
@@ -27,6 +28,7 @@ function recupererImagesDepuisAPI() {
             works=data
         // Une fois les images récupérées, les afficher sur l'interface utilisateur
             afficherImagesSurInterface(works);
+            afficherImagesDansModal(works);
         })
         .catch(error => {
             console.error("Erreur lors de la récupération des images depuis l'API :", error);
@@ -174,7 +176,7 @@ function displayAdmin() {
     modifyButton.classList.add("modify");
 
     const editIcone = document.createElement("i");
-    editIcone.classList.add = "fa-regular fa-pen-to-square";
+    editIcone.classList.add("far","fa-pen-to-square");
 
     const textModify = document.createElement("p");
     textModify.textContent = "modifier";
@@ -191,3 +193,46 @@ function displayAdmin() {
     modifyButton.appendChild(textModify)
     
 }
+
+//------------------------------------------------------ Modal
+
+//faire apparaitre la modal avec l'évènement clic sur bouton modifier
+
+//afficher les img dans la modal
+function afficherImagesDansModal(works){
+    console.log("Fonction afficherImagesDansModal appelée avec :", works);
+    //effacer le contenu de la div
+    modalContent.innerHTML="";
+
+    // Parcourir les images et créer des balises <img> pour chaque image
+    works.forEach(work => {
+        const articleImage = document.createElement("article");
+        modalContent.appendChild(articleImage);
+        articleImage.classList=work.category.name
+        articleImage.setAttribute("id",work.id)
+
+        // Ajout d'une div noire dans le coin en haut à droite
+        const deleteDiv = document.createElement("div");
+        deleteDiv.classList.add("deleteDiv");
+        articleImage.appendChild(deleteDiv);
+
+        // ajout de l'icone de suppression
+        const deleteIcone = document.createElement("i");
+        deleteIcone.classList.add("fas", "fa-trash-can");
+        articleImage.appendChild(deleteIcone);
+
+        // ajout d'image dans l'article
+        const img=document.createElement("img");
+        img.src=work.imageUrl
+        articleImage.appendChild(img)
+
+    });
+
+
+}
+
+// Appeler la fonction pour récupérer et afficher les images
+recupererImagesDepuisAPI();
+
+//ajouter l'icone de suppression sur chaque img
+//

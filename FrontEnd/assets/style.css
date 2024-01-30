@@ -118,9 +118,9 @@ h2{
 
 .titreLoginProjet{
 	display: flex;
-	align-items: center;
+	align-items: baseline;
 	justify-content: center;
-	gap: 10px;
+	gap: 20px;
 	margin-left: 20px;
 	margin-bottom: 50px;
 	padding-top: 50px;
@@ -129,10 +129,19 @@ h2{
 	background-color: white;
 	border: none;
 	margin-bottom: 1em;
+	margin-top: 0px;
+	display: flex;
+	gap: 5px;
+	align-items: center;
+	justify-content: center;
 }
 .modify i{
 	font-size: 15px;
 	color: black;
+}
+.modify p{
+	font-size: 14px;
+	font-family: "work sans";
 }
 
 
@@ -148,7 +157,7 @@ h2{
     z-index: 2;
     align-items: center;
     justify-content: center;
-	
+	display: none;
 	
 }
 
@@ -156,7 +165,6 @@ h2{
 	width: 630px;
     height: 688px;
 	top: 10%;
-	
 	margin-top: calc(100% - 70%);
 	margin-left: calc(100% - 60%);
     background-color: white;
@@ -177,17 +185,38 @@ h2{
 	cursor: pointer;
 }
 .projectImg{
-    width: 80%;
+    width: 70%;
     height: 50%;
-    padding: 20px 0px;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-column-gap: 10px;
-	grid-row-gap: 10px;
+	grid-row-gap: 20px;
+	margin-top: 50px;
+	margin-bottom: 60px;
+	
+}
+.projectImg article{
+	position: relative;
 }
 .projectImg img{
 	width: 100%;
+	height: 100%;
 }
+.deleteDiv{
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 5px;
+	right: 5px;
+	background-color: black;
+	border-radius: 5px;
+}
+.fa-trash-can{
+	color: white;
+	position: absolute;
+	
+}
+
 h4{
     font-size: 26px;
     color: black;
@@ -195,13 +224,14 @@ h4{
     display: flex;
     justify-content: center;
     font-family: 'Work Sans';
+	margin-top: 20px;
 }
 
 .separLine {
     height: 2px;
     background-color: #B3B3B3;
     width: 70%;
-    margin: 10px 0px;
+    margin: 20px 0px;
 }
 .windowModal button{
     background-color:#1D6154;
