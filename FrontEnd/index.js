@@ -200,27 +200,31 @@ function displayAdmin() {
 const modifyButton = document.querySelector(".modify")
 const modalElement = document.querySelector(".modal")
 const deleteButton = document.querySelector(".fa-xmark")
-const modalElementAjout = document.querySelector(".modalAjout")
 const ajoutButton = document.querySelector(".ajoutImage")
+const galleryModal= document.querySelector(".projectImg")
+const titleModalGallery = document.querySelector(".titleModalGallery")
+const titleModalAjout = document.querySelector("titleModalAjout")
 
 modifyButton.addEventListener("click", () => {
     modalElement.style.display="block";
+    galleryModal.style.display="grid";
 } )
 
 // faire apparaitre la modal d'ajout d'image
 
 ajoutButton.addEventListener("click", () =>{
-    modalContent.style.display="none";
-    modalElementAjout.style.display="block";
+    titleModalGallery.style.display="none";
+    titleModalAjout.style.display="flex"
+
+    galleryModal.style.display="none";
+    
 })
 
 
 //faire disparaitre la modal
 
-
 deleteButton.addEventListener("click",() =>{
     modalElement.style.display = "none";
-    modalElementAjout.style.display ="none";
 } )
 
 //afficher les img dans la modal

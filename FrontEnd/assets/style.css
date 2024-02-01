@@ -230,7 +230,12 @@ h4{
     font-family: 'Work Sans';
 	margin-top: 20px;
 }
-
+.titleModalGallery{
+	display: flex;
+}
+.titleModalAjout{
+	display: none;
+}
 .separLine {
     height: 2px;
     background-color: #B3B3B3;
@@ -256,18 +261,7 @@ h4{
     font-family: 'Syne';
 }
 
-.modalAjout{
-	width: 200%;
-    height: 120%;
-    position: absolute;
-    top: -59px;
-    left: -50%;
-    background-color: rgba(0, 0, 0, 0.5); 
-    z-index: 2;
-    align-items: center;
-    justify-content: center;
-	display: none;
-}
+
 /*-------------------------------------------------------------------------*/
 
 #headMenu {
