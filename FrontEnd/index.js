@@ -197,26 +197,50 @@ function displayAdmin() {
 //------------------------------------------------------ Modal
 
 //faire apparaitre la modal avec l'évènement clic sur bouton modifier
+//variables génarales
+
 const modifyButton = document.querySelector(".modify")
 const modalElement = document.querySelector(".modal")
 const deleteButton = document.querySelector(".fa-xmark")
+const previousButton = document.querySelector(".fa-arrow-left")
 const ajoutButton = document.querySelector(".ajoutImage")
 const galleryModal= document.querySelector(".projectImg")
 const titleModalGallery = document.querySelector(".titleModalGallery")
-const titleModalAjout = document.querySelector("titleModalAjout")
+const titleModalAjout = document.querySelector(".titleModalAjout")
+const windowModalAjout = document.querySelector(".windowAjoutImg")
 
 modifyButton.addEventListener("click", () => {
     modalElement.style.display="block";
+    previousButton.style.opacity="0";
+    titleModalGallery.style.display="flex";
     galleryModal.style.display="grid";
 } )
 
 // faire apparaitre la modal d'ajout d'image
 
-ajoutButton.addEventListener("click", () =>{
-    titleModalGallery.style.display="none";
-    titleModalAjout.style.display="flex"
+function openWindowModalAjout(){
+    // faire disparaitre les élément de la première modal
+        titleModalGallery.style.display="none";
+        galleryModal.style.display="none";
 
-    galleryModal.style.display="none";
+    // faire apparaitre les éléments créé dans index.html
+        titleModalAjout.style.display="flex";
+        previousButton.style.opacity="1";
+
+    // Créez de nouveaux éléments
+    const imageSpace = document.createElement("div");
+    imageSpace.classList.add("imageSpace");
+
+    const imageWithout = document.createElement("img");
+    imageWithout.classList.add("imageWithout");
+    
+    // Ajoutez le nouveau paragraphe au conteneur
+    windowModalAjout.appendChild(imageSpace);
+
+}
+
+ajoutButton.addEventListener("click", () =>{
+    openWindowModalAjout()
     
 })
 
@@ -225,7 +249,17 @@ ajoutButton.addEventListener("click", () =>{
 
 deleteButton.addEventListener("click",() =>{
     modalElement.style.display = "none";
+    titleModalAjout.style.display ="none";
 } )
+
+// revenir à la modal précédente
+
+previousButton.addEventListener("click", () =>{
+    titleModalGallery.style.display ="flex";
+    titleModalAjout.style.display ="none";
+    galleryModal.style.display ="grid";
+    previousButton.style.opacity="0";
+})
 
 //afficher les img dans la modal
 function afficherImagesDansModal(works){
@@ -248,7 +282,7 @@ function afficherImagesDansModal(works){
         // ajout de l'icone de suppression
         const deleteIcone = document.createElement("i");
         deleteIcone.classList.add("fas", "fa-trash-can");
-        articleImage.appendChild(deleteIcone);
+        deleteDiv.appendChild(deleteIcone);
 
         // ajout d'image dans l'article
         const img=document.createElement("img");
