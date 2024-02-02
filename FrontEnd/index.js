@@ -277,7 +277,7 @@ const categorySelect = document.createElement("select");
 categorySelect.name = "categorie";
 
 // Ajout d'options au menu déroulant
-const options = ["Option 1", "Option 2", "Option 3"];
+const options = ["Objets", "Appartements", "Hotels & restaurants"];
 for (let i = 0; i < options.length; i++) {
 const option = document.createElement("option");
 option.value = options[i];
