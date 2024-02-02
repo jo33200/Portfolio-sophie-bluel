@@ -214,6 +214,8 @@ modifyButton.addEventListener("click", () => {
     previousButton.style.opacity="0";
     titleModalGallery.style.display="flex";
     galleryModal.style.display="grid";
+    formModal.style.display="none";
+    windowModalAjout.style.display ="none";
 } )
 
 // faire apparaitre la modal d'ajout d'image
@@ -226,6 +228,8 @@ function openWindowModalAjout(){
     // faire apparaitre les éléments créé dans index.html
         titleModalAjout.style.display="flex";
         previousButton.style.opacity="1";
+        windowModalAjout.style.display="flex";
+        formModal.style.display="flex";
 
     // Créez de nouveaux éléments
     const imageSpace = document.createElement("div");
@@ -233,9 +237,12 @@ function openWindowModalAjout(){
 
     const imageWithout = document.createElement("img");
     imageWithout.classList.add("imageWithout");
+     
     
-    // Ajoutez le nouveau paragraphe au conteneur
+  
+  // Ajoutez le nouveau paragraphe au conteneur
     windowModalAjout.appendChild(imageSpace);
+    windowModalAjout.appendChild(formModal);
 
 }
 
@@ -243,6 +250,44 @@ ajoutButton.addEventListener("click", () =>{
     openWindowModalAjout()
     
 })
+
+// Création du formulaire
+const formModal = document.createElement("form");
+
+
+// Création du label pour le titre
+const titleLabel = document.createElement("label");
+titleLabel.textContent = "Titre : ";
+
+// Création de l'input pour le titre
+const titleInput = document.createElement("input");
+titleInput.type = "text";
+titleInput.name = "titre";
+
+// Ajout du label et de l'input au formulaire
+formModal.appendChild(titleLabel);
+formModal.appendChild(titleInput);
+
+// Création du label pour la catégorie
+const categoryLabel = document.createElement("label");
+categoryLabel.textContent = "Catégorie : ";
+
+// Création du menu déroulant pour la catégorie
+const categorySelect = document.createElement("select");
+categorySelect.name = "categorie";
+
+// Ajout d'options au menu déroulant
+const options = ["Option 1", "Option 2", "Option 3"];
+for (let i = 0; i < options.length; i++) {
+const option = document.createElement("option");
+option.value = options[i];
+option.text = options[i];
+categorySelect.appendChild(option);
+}
+
+// Ajout du label et du menu déroulant au formulaire
+formModal.appendChild(categoryLabel);
+formModal.appendChild(categorySelect);
 
 
 //faire disparaitre la modal
