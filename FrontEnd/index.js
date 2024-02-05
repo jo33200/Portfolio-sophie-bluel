@@ -220,6 +220,7 @@ modifyButton.addEventListener("click", () => {
     galleryModal.style.display="grid";
     formModal.style.display="none";
     windowModalAjout.style.display ="none";
+    validationImageButton.style.display="none";
 } )
 
 //----------------------------------------------------------- Modal d'ajout d'image
