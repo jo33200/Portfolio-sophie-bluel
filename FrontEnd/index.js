@@ -411,10 +411,13 @@ inputFileChooser.addEventListener('change', (event) => {
         // Récupérez les informations sur l'image, le nom et la categorie
         const formData = new FormData();
         formData.append('image', inputFileChooser.files[0]) // récupère l'image' sélectionné
-        formData.append('titre', inputTxt.value); // récupère le titre de l'image
-        formData.append('categorie', select.value); // récupère la catégorie de l'image
+        formData.append('title', titleInput.value); // récupère le titre de l'image
+        formData.append('category', categorySelect.value); // récupère la catégorie de l'image
+        
+        //récupération du token
+        const token = localStorage.getItem("Token"); 
 
-        // URL de l'API pour ajouter une nouvelle image
+        // URL de l'API 
         const urlAPI = "http://localhost:5678/api/works";
 
         // Options de la requête POST
@@ -422,19 +425,21 @@ inputFileChooser.addEventListener('change', (event) => {
             method:'POST',
             body: formData,
             headers:{
-                'Authorization': `Bearer ${token}` // Ajouter l'authentification
+                'Authorization': `Bearer ${token}` // Ajouter jeton d'authentification
             }
         };
 
         // Envoyez la requête POST à l'API
         fetch(urlAPI, options)
-            .then(response=>{
+            .then(async(response)=>{
                 if(!response.ok){
-                    throw new Error("Erreur lors de l'ajout de l'image: ${response.status}")
-                }
+                   alert("l'image à bien été ajouté")
+                    
                 // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
-                return recupererImagesDepuisAPI();
                 
+                await recupererImagesDepuisAPI();
+                
+                }
             })
             .catch(error => {
                 console.error("Erreur lors de l'ajout de l'image :", error);
