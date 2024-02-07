@@ -311,6 +311,16 @@ function displayAdmin() {
         titleModalAjout.style.display ="none";
     } )
 
+   // Ajoutez un écouteur d'événements au clic sur document
+modalElement.addEventListener('click', (event) => {
+    // Vérifiez si l'élément cliqué n'est pas à l'intérieur de la fenêtre modale
+    if (!windowModal.contains(event.target) && event.target !== modifyButton) {
+        // Si c'est le cas, fermez la modal
+        modalElement.style.display = 'none';
+        titleModalAjout.style.display = 'none';
+    }
+});
+
 
 // revenir à la modal précédente
 
