@@ -331,8 +331,8 @@ h4{
 	flex-direction: column;
 }
 .imageSpace{
-	width: 100%;
-	height: 100%;
+	width: 420px;
+	height: 169px;
 	background-color: #E8F1F6;
 	display: flex;
 	flex-direction: column;
@@ -342,7 +342,11 @@ h4{
 .imageSpace i{
 	width: 76px;
 	height: 76px;
-	
+}
+.imageSpace img{
+	width: 50%;
+	height: 100%;
+	object-fit: cover;
 }
 .fa-image{
 	font-size: 76px;

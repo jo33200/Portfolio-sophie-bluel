@@ -292,17 +292,9 @@ function displayAdmin() {
             titleModalAjout.style.display="flex";
             previousButton.style.opacity="1";
             windowModalAjout.style.display="flex";
-            imageSpace.style.display="flex";
-            imageWithout.style.display="flex";
 
             validationImageButton.style.display="flex";
-        
-        // Afficher tous les enfants de windowModalAjout
-            for (let child of windowModalAjout.children) {
-                child.style.display = "flex";
-            }
 
-            console.log("ca s'affiche correctement")
     }
 
     ajoutButton.addEventListener("click", () =>{
@@ -323,6 +315,7 @@ function displayAdmin() {
 // revenir à la modal précédente
 
     previousButton.addEventListener("click", () =>{
+        imageSpace.innerHTML='';
         titleModalGallery.style.display ="flex";
         titleModalAjout.style.display ="none";
         galleryModal.style.display ="grid";
@@ -330,6 +323,11 @@ function displayAdmin() {
         windowModalAjout.style.display="none";
         ajoutButton.style.display="flex";
         validationImageButton.style.display="none";
+
+        imageSpace.appendChild(imageWithout);
+        imageSpace.appendChild(openExplorerWindows);
+        imageSpace.appendChild(textFormatImage);
+        
     })
 
 //afficher les img dans la modal
@@ -373,42 +371,37 @@ recupererImagesDepuisAPI();
 
 // faire une fonction pour prévisualiser une image sélectionné dans l'explorateur windows
 
-function previewImage(input) {
-    const imageSpace = document.querySelector(".imageSpace");
-    
-    // Vérifier si des fichiers sont sélectionnés
-    if (input.files && input.files[0]) {
+// Sélectionnez l'élément d'entrée de type fichier
+const inputFileChooser = document.createElement('input');
+inputFileChooser.type = 'file';
+
+// Gérez l'événement de changement de fichier
+inputFileChooser.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+
+    // Vérifiez si un fichier a été sélectionné
+    if (file) {
         const reader = new FileReader();
 
-        reader.onload = function (e) {
-            // Créer une balise <img> pour afficher l'image sélectionnée
-            const previewImg = document.createElement("img");
-            previewImg.src = e.target.result;
-            
-            // Effacer le contenu précédent de imageSpace
-            imageSpace.innerHTML = "";
-            
-            // Ajouter l'image prévisualisée à imageSpace
-            imageSpace.appendChild(previewImg);
+        // Gérez l'événement de chargement de fichier
+        reader.onload = (e) => {
+            const imagePreview = document.createElement('img');
+            imagePreview.src = e.target.result;
+
+            // Supprimez le contenu existant de la zone imageSpace
+            imageSpace.innerHTML = '';
+
+            // Ajoutez l'image prévisualisée à la zone imageSpace
+            imageSpace.appendChild(imagePreview);
         };
 
-        // Lire le contenu du fichier sélectionné en tant que URL de données
-        reader.readAsDataURL(input.files[0]);
+        // Lisez le contenu du fichier en tant qu'URL de données
+        reader.readAsDataURL(file);
     }
-}
+});
 
-const fileInput = document.querySelector(".openExplorerWindows");
-
-openExplorerWindows.addEventListener("click", function() {
-    // Simuler un clic sur l'élément input de type file
-  
-    fileInput.type = "file";
-    
-    // Écouter les changements dans l'input file
-    fileInput.addEventListener("change", function() {
-        previewImage(this);
-    });
-    
-    // Déclencher le clic programmé
-    fileInput.click();
+// Ajoutez un gestionnaire d'événements pour le bouton "openExplorerWindows"
+openExplorerWindows.addEventListener('click', () => {
+    // Affichez l'écran de l'explorateur Windows en cliquant sur le champ d'entrée de type fichier
+    inputFileChooser.click();
 });
