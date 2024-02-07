@@ -203,6 +203,7 @@ function displayAdmin() {
 
 const modifyButton = document.querySelector(".modify")
 const modalElement = document.querySelector(".modal")
+const windowModal = document.querySelector(".windowModal")
 const deleteButton = document.querySelector(".fa-xmark")
 const previousButton = document.querySelector(".fa-arrow-left")
 const ajoutButton = document.querySelector(".ajoutImage")
@@ -214,10 +215,12 @@ const validationImageButton = document.querySelector(".validationImageButton")
 
 // créer un bouton "modifier"
 modifyButton.addEventListener("click", () => {
+    windowModalAjout.innerHTML = "";
     modalElement.style.display="block";
     previousButton.style.opacity="0";
     titleModalGallery.style.display="flex";
     galleryModal.style.display="grid";
+    ajoutButton.style.display="flex";
     formModal.style.display="none";
     windowModalAjout.style.display ="none";
     validationImageButton.style.display="none";
@@ -326,6 +329,7 @@ deleteButton.addEventListener("click",() =>{
     modalElement.style.display = "none";
     titleModalAjout.style.display ="none";
 } )
+
 
 // revenir à la modal précédente
 
