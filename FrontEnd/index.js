@@ -400,8 +400,44 @@ inputFileChooser.addEventListener('change', (event) => {
     }
 });
 
-// Ajoutez un gestionnaire d'événements pour le bouton "openExplorerWindows"
-openExplorerWindows.addEventListener('click', () => {
-    // Affichez l'écran de l'explorateur Windows en cliquant sur le champ d'entrée de type fichier
-    inputFileChooser.click();
-});
+// Ouvrir l'explorateur windows au click
+    openExplorerWindows.addEventListener('click', () => {
+        inputFileChooser.click();
+    });
+
+// API-------------------------------------Ajout d'image dans la gallery
+
+    validationImageButton.addEventListener("click", ()=>{
+        // Récupérez les informations sur l'image, le nom et la categorie
+        const formData = new FormData();
+        formData.append('image', inputFileChooser.files[0]) // récupère l'image' sélectionné
+        formData.append('titre', inputTxt.value); // récupère le titre de l'image
+        formData.append('categorie', select.value); // récupère la catégorie de l'image
+
+        // URL de l'API pour ajouter une nouvelle image
+        const urlAPI = "http://localhost:5678/api/works";
+
+        // Options de la requête POST
+        const options ={
+            method:'POST',
+            body: formData,
+            headers:{
+                'Authorization': `Bearer ${token}` // Ajouter l'authentification
+            }
+        };
+
+        // Envoyez la requête POST à l'API
+        fetch(urlAPI, options)
+            .then(response=>{
+                if(!response.ok){
+                    throw new Error("Erreur lors de l'ajout de l'image: ${response.status}")
+                }
+                // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
+                return recupererImagesDepuisAPI();
+                
+            })
+            .catch(error => {
+                console.error("Erreur lors de l'ajout de l'image :", error);
+            });
+
+    });
