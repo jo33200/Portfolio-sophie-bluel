@@ -199,149 +199,138 @@ function displayAdmin() {
 //------------------------------------------------------ Modal gallery
 
 //faire apparaitre la modal avec l'évènement clic sur bouton modifier
+
 //variables génarales
+    const modifyButton = document.querySelector(".modify")
+    const modalElement = document.querySelector(".modal")
+    const windowModal = document.querySelector(".windowModal")
+    const deleteButton = document.querySelector(".fa-xmark")
+    const previousButton = document.querySelector(".fa-arrow-left")
+    const ajoutButton = document.querySelector(".ajoutImage")
+    const galleryModal= document.querySelector(".projectImg")
+    const titleModalGallery = document.querySelector(".titleModalGallery")
+    const titleModalAjout = document.querySelector(".titleModalAjout")
+    const windowModalAjout = document.querySelector(".windowAjoutImg")
+    const validationImageButton = document.querySelector(".validationImageButton")
 
-const modifyButton = document.querySelector(".modify")
-const modalElement = document.querySelector(".modal")
-const windowModal = document.querySelector(".windowModal")
-const deleteButton = document.querySelector(".fa-xmark")
-const previousButton = document.querySelector(".fa-arrow-left")
-const ajoutButton = document.querySelector(".ajoutImage")
-const galleryModal= document.querySelector(".projectImg")
-const titleModalGallery = document.querySelector(".titleModalGallery")
-const titleModalAjout = document.querySelector(".titleModalAjout")
-const windowModalAjout = document.querySelector(".windowAjoutImg")
-const validationImageButton = document.querySelector(".validationImageButton")
 
-// créer un bouton "modifier"
-modifyButton.addEventListener("click", () => {
-    windowModalAjout.innerHTML = "";
-    modalElement.style.display="block";
-    previousButton.style.opacity="0";
-    titleModalGallery.style.display="flex";
-    galleryModal.style.display="grid";
-    ajoutButton.style.display="flex";
-    formModal.style.display="none";
-    windowModalAjout.style.display ="none";
-    validationImageButton.style.display="none";
-} )
+    // créer un bouton "modifier"
+    modifyButton.addEventListener("click", () => {
+        modalElement.style.display="block";
+        previousButton.style.opacity="0";
+        titleModalGallery.style.display="flex";
+        galleryModal.style.display="grid";
+        ajoutButton.style.display="flex";
+        windowModalAjout.style.display ="none";
+        validationImageButton.style.display="none";
+    } )
 
 //----------------------------------------------------------- Modal d'ajout d'image
 
 // faire apparaitre une modal pour rajouter une image
 
-function openWindowModalAjout(){
-    // faire disparaitre les élément de la première modal
-        titleModalGallery.style.display="none";
-        galleryModal.style.display="none";
-        ajoutButton.style.display="none";
-
-    // faire apparaitre les éléments créé dans index.html
-        titleModalAjout.style.display="flex";
-        previousButton.style.opacity="1";
-        windowModalAjout.style.display="flex";
-        formModal.style.display="flex";
-        validationImageButton.style.display="flex";
-
-    // Créez de nouveaux éléments
-        const imageSpace = document.createElement("div");
-        imageSpace.classList.add("imageSpace");
-
-        const imageWithout = document.createElement("i");
-        imageWithout.classList.add("fa-regular", "fa-image");
-
-        const openExplorerWindows = document.createElement("button");
-        openExplorerWindows.classList.add("openExplorerWindows");
-
-        const textButtonExplorer = document.createElement("p");
-        textButtonExplorer.textContent="+ Ajouter photo";
-
-        const textFormatImage = document.createElement("p");
-        textFormatImage.textContent="jpg, png : 4mo max";
-        textFormatImage.classList.add("textFormatImage")
-  
-    // Ajoutez le nouveau paragraphe au conteneur
-        windowModalAjout.appendChild(imageSpace);
-        windowModalAjout.appendChild(formModal);
-        imageSpace.appendChild(imageWithout);
-        imageSpace.appendChild(openExplorerWindows);
-        openExplorerWindows.appendChild(textButtonExplorer);
-        imageSpace.appendChild(textFormatImage);
-
-}
-
-ajoutButton.addEventListener("click", () =>{
-    windowModalAjout.innerHTML = "";
-    openWindowModalAjout()
-    
-})
+// Créez de nouveaux éléments
+    const imageSpace = document.createElement("div");
+    imageSpace.classList.add("imageSpace");
+    const imageWithout = document.createElement("i");
+    imageWithout.classList.add("fa-regular", "fa-image");
+    const openExplorerWindows = document.createElement("button");
+    openExplorerWindows.classList.add("openExplorerWindows");
+    openExplorerWindows.textContent="+ Ajouter photo";
+    const textFormatImage = document.createElement("p");
+    textFormatImage.textContent="jpg, png : 4mo max";
+    textFormatImage.classList.add("textFormatImage")
 
 // Création du formulaire
-
-const formModal = document.createElement("form");
-
-
+    const formModal = document.createElement("form");
 // Création du label pour le titre
-
-const titleLabel = document.createElement("label");
-titleLabel.textContent = "Titre : ";
-
+    const titleLabel = document.createElement("label");
+    titleLabel.textContent = "Titre : ";
 // Création de l'input pour le titre
-
-const titleInput = document.createElement("input");
-titleInput.type = "text";
-titleInput.name = "titre";
-
+    const titleInput = document.createElement("input");
+    titleInput.type = "text";
+    titleInput.name = "titre";
 // Ajout du label et de l'input au formulaire
-
-formModal.appendChild(titleLabel);
-formModal.appendChild(titleInput);
-
+    formModal.appendChild(titleLabel);
+    formModal.appendChild(titleInput);
 // Création du label pour la catégorie
-
-const categoryLabel = document.createElement("label");
-categoryLabel.textContent = "Catégorie : ";
-
+    const categoryLabel = document.createElement("label");
+    categoryLabel.textContent = "Catégorie : ";
 // Création du menu déroulant pour la catégorie
-
-const categorySelect = document.createElement("select");
-categorySelect.name = "categorie";
-
+    const categorySelect = document.createElement("select");
+    categorySelect.name = "categorie";
 // Ajout d'options au menu déroulant
-
-const options = ["","Objets", "Appartements", "Hotels & restaurants"];
-for (let i = 0; i < options.length; i++) {
-    const option = document.createElement("option");
-    option.value = options[i];
-    option.text = options[i];
-    categorySelect.appendChild(option);
+    const options = ["","Objets", "Appartements", "Hotels & restaurants"];
+    for (let i = 0; i < options.length; i++) {
+        const option = document.createElement("option");
+        option.value = options[i];
+        option.text = options[i];
+        categorySelect.appendChild(option);
 }
-
 // Ajout du label et du menu déroulant au formulaire
+    formModal.appendChild(categoryLabel);
+    formModal.appendChild(categorySelect);
 
-formModal.appendChild(categoryLabel);
-formModal.appendChild(categorySelect);
+
+// Ajoutez le nouveau paragraphe au conteneur
+    windowModalAjout.appendChild(imageSpace);
+    windowModalAjout.appendChild(formModal);
+    imageSpace.appendChild(imageWithout);
+    imageSpace.appendChild(openExplorerWindows);
+    imageSpace.appendChild(textFormatImage);
+    
+    
+
+// Fonction d'ajout de la modal d'ajout avec les éléments qui changent
+    function openWindowModalAjout(){
+        // faire disparaitre les élément de la première modal
+            titleModalGallery.style.display="none";
+            galleryModal.style.display="none";
+            ajoutButton.style.display="none";
+
+        // faire apparaitre les éléments créé dans index.html
+            titleModalAjout.style.display="flex";
+            previousButton.style.opacity="1";
+            windowModalAjout.style.display="flex";
+            imageSpace.style.display="flex";
+            imageWithout.style.display="flex";
+
+            validationImageButton.style.display="flex";
+        
+        // Afficher tous les enfants de windowModalAjout
+            for (let child of windowModalAjout.children) {
+                child.style.display = "flex";
+            }
+
+            console.log("ca s'affiche correctement")
+    }
+
+    ajoutButton.addEventListener("click", () =>{
+        validationImageButton.style.display="none";
+        openWindowModalAjout()
+        
+    })
 
 
 //faire disparaitre la modal
 
-deleteButton.addEventListener("click",() =>{
-    modalElement.style.display = "none";
-    titleModalAjout.style.display ="none";
-} )
+    deleteButton.addEventListener("click",() =>{
+        modalElement.style.display = "none";
+        titleModalAjout.style.display ="none";
+    } )
 
 
 // revenir à la modal précédente
 
-previousButton.addEventListener("click", () =>{
-    titleModalGallery.style.display ="flex";
-    titleModalAjout.style.display ="none";
-    galleryModal.style.display ="grid";
-    previousButton.style.opacity="0";
-    windowModalAjout.style.display="none";
-    ajoutButton.style.display="flex";
-    validationImageButton.style.display="none";
-})
+    previousButton.addEventListener("click", () =>{
+        titleModalGallery.style.display ="flex";
+        titleModalAjout.style.display ="none";
+        galleryModal.style.display ="grid";
+        previousButton.style.opacity="0";
+        windowModalAjout.style.display="none";
+        ajoutButton.style.display="flex";
+        validationImageButton.style.display="none";
+    })
 
 //afficher les img dans la modal
 
@@ -378,8 +367,48 @@ function afficherImagesDansModal(works){
 }
 
 
-
-
 // Appeler la fonction pour récupérer et afficher les images
 recupererImagesDepuisAPI();
 
+
+// faire une fonction pour prévisualiser une image sélectionné dans l'explorateur windows
+
+function previewImage(input) {
+    const imageSpace = document.querySelector(".imageSpace");
+    
+    // Vérifier si des fichiers sont sélectionnés
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            // Créer une balise <img> pour afficher l'image sélectionnée
+            const previewImg = document.createElement("img");
+            previewImg.src = e.target.result;
+            
+            // Effacer le contenu précédent de imageSpace
+            imageSpace.innerHTML = "";
+            
+            // Ajouter l'image prévisualisée à imageSpace
+            imageSpace.appendChild(previewImg);
+        };
+
+        // Lire le contenu du fichier sélectionné en tant que URL de données
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+const fileInput = document.querySelector(".openExplorerWindows");
+
+openExplorerWindows.addEventListener("click", function() {
+    // Simuler un clic sur l'élément input de type file
+  
+    fileInput.type = "file";
+    
+    // Écouter les changements dans l'input file
+    fileInput.addEventListener("change", function() {
+        previewImage(this);
+    });
+    
+    // Déclencher le clic programmé
+    fileInput.click();
+});

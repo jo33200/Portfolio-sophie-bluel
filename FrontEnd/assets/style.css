@@ -201,8 +201,8 @@ h2{
 .windowModal{
 	width: 630px;
     height: 688px;
-	margin-top: calc(100% - 74%);
-	margin-left: calc(100% - 63%);
+	margin-top: calc(100% - 68%);
+	margin-left: calc(100% - 66%);
     background-color: white;
     border-radius: 20px;
     display: flex;
