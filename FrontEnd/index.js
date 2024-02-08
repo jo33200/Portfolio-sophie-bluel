@@ -369,14 +369,24 @@ function afficherImagesDansModal(works){
         img.src=work.imageUrl
         articleImage.appendChild(img)
 
+        // Ajout de l'événement de suppression
+        deleteDiv.addEventListener("click", () => {
+            // Récupérer l'ID de l'image à supprimer
+            const imageId = work.id;
+
+            // Appeler la fonction pour supprimer l'image
+            supprimerImage(imageId);
+
+        });
+
+
     });
-
-
 }
-
 
 // Appeler la fonction pour récupérer et afficher les images
 recupererImagesDepuisAPI();
+
+
 
 
 // faire une fonction pour prévisualiser une image sélectionné dans l'explorateur windows
@@ -456,3 +466,33 @@ inputFileChooser.addEventListener('change', (event) => {
             });
 
     });
+
+    // Fonction pour supprimer une image
+function supprimerImage(imageId) {
+    // Récupérer le token
+    const token = localStorage.getItem("Token");
+
+    // URL de l'API pour supprimer une image spécifique
+    const urlAPI = `http://localhost:5678/api/works/${imageId}`;
+
+    // Options de la requête DELETE
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}` // Ajouter le token d'authentification
+        }
+    };
+
+    // Envoyer la requête DELETE à l'API
+    fetch(urlAPI, options)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur lors de la suppression de l'image : ${response.status}`);
+            }
+            // Recharger les images après la suppression
+            return recupererImagesDepuisAPI();
+        })
+        .catch(error => {
+            console.error("Erreur lors de la suppression de l'image :", error);
+        });
+}
