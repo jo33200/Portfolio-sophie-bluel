@@ -235,20 +235,25 @@ h2{
 .projectImg{
     width: 70%;
     height: 50%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	grid-column-gap: 10px;
-	grid-row-gap: 20px;
-	margin-top: 50px;
-	margin-bottom: 60px;
-	
+    display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 13.5px;
+	flex-wrap: wrap;
 }
 .projectImg article{
 	position: relative;
+	height: 103px;
+    width: 77px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .projectImg img{
 	width: 100%;
 	height: 100%;
+	object-fit: cover;
 }
 .deleteDiv{
 	position: absolute;

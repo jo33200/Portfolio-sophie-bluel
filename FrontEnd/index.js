@@ -219,7 +219,7 @@ function displayAdmin() {
         modalElement.style.display="block";
         previousButton.style.opacity="0";
         titleModalGallery.style.display="flex";
-        galleryModal.style.display="grid";
+        galleryModal.style.display="flex";
         ajoutButton.style.display="flex";
         windowModalAjout.style.display ="none";
         validationImageButton.style.display="none";
@@ -328,7 +328,7 @@ modalElement.addEventListener('click', (event) => {
         imageSpace.innerHTML='';
         titleModalGallery.style.display ="flex";
         titleModalAjout.style.display ="none";
-        galleryModal.style.display ="grid";
+        galleryModal.style.display ="flex";
         previousButton.style.opacity="0";
         windowModalAjout.style.display="none";
         ajoutButton.style.display="flex";
