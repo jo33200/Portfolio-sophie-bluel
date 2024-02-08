@@ -5,9 +5,83 @@
 // -------------------------------------------------------- Variables globales
 
 const conteneurImages = document.querySelector(".gallery");
-const modalContent = document.querySelector(".projectImg");
+const modal=document.querySelector(".modal");
+const btnCloseModal=document.querySelector(".fa-xmark");
+const btnValidAjout=document.querySelector(".validationImageButton");
+// const formModal = document.createElement("form");
+const btnOuvrirAjout=document.querySelector(".ajoutImage")
 
+btnOuvrirAjout.addEventListener("click", ()=> {
+    modal.style.display="block";
+});
 
+btnCloseModal.addEventListener("click", ()=> {
+    modal.style.display="none";
+});
+
+formModal.addEventListener("submit", function (event){
+    event.preventDefault()
+    ajouterImage()
+})
+
+function preparFormAjout(){
+    const formAjoutImage= document.createElement("form")
+    formAjoutImage.id="formAjoutImage"
+    formAjoutImage.innerHTML=`
+    <input id="titreImage" type="text" placeholder="titre de l'image" required >
+    <select id="categorie Image">
+    <option value=""> choisir catégorie </option>
+    <option value="Objet">Objet</option>
+    <option value="Appartement">Appartement </option>
+    <option value="Hôtel et restaurant">Hôtel et restaurant </option>
+    </select>
+    <input id="fileImage" type="file" required >
+    <button type="submit"> ajouter </button>`
+    windowAjoutImg.innerHTML="";
+    windowAjoutImg.appendChild(formAjoutImage)
+    formAjoutImage.addEventListener("submit", function (event){
+        event.preventDefault()
+        ajouterImage()
+    })
+}
+
+function ajoutImage() {
+    const formData = new FormData();
+        formData.append('image', document.querySelector("#fileImage")) // récupère l'image' sélectionné
+        formData.append('title', titleInput.value); // récupère le titre de l'image
+        formData.append('category', categorySelect.value); // récupère la catégorie de l'image
+        
+        //récupération du token
+        const token = localStorage.getItem("Token"); 
+
+        // URL de l'API 
+        const urlAPI = "http://localhost:5678/api/works";
+
+        // Options de la requête POST
+        const options ={
+            method:'POST',
+            body: formData,
+            headers:{
+                'Authorization': `Bearer ${token}` // Ajouter jeton d'authentification
+            }
+        };
+
+        // Envoyez la requête POST à l'API
+        fetch(urlAPI, options)
+            .then(async(response)=>{
+                if(!response.ok){
+                   alert("l'image à bien été ajouté")
+                    
+                // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
+                
+                return recupererImagesDepuisAPI();
+                
+                }
+            })
+            .catch(error => {
+                console.error("Erreur lors de l'ajout de l'image :", error);
+            });
+}
 
 // -------------------------------------------------------- Affichage utilisateur
 
@@ -242,7 +316,7 @@ function displayAdmin() {
     textFormatImage.classList.add("textFormatImage")
 
 // Création du formulaire
-    const formModal = document.createElement("form");
+    
 // Création du label pour le titre
     const titleLabel = document.createElement("label");
     titleLabel.textContent = "Titre : ";
