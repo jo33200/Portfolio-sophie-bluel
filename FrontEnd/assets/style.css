@@ -231,8 +231,15 @@ h2{
 	font-size: 16px;
 	display: flex;
 }
-
-.projectImg{
+.modalHome{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 90%;
+	width: 100%;
+}
+.modalContent{
     width: 70%;
     height: 50%;
     display: flex;
@@ -242,7 +249,7 @@ h2{
 	gap: 13.5px;
 	flex-wrap: wrap;
 }
-.projectImg article{
+.modalContent article{
 	position: relative;
 	height: 103px;
     width: 77px;
@@ -250,7 +257,7 @@ h2{
     align-items: center;
     justify-content: center;
 }
-.projectImg img{
+.modalContent img{
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
@@ -281,7 +288,7 @@ h4{
     display: flex;
     justify-content: center;
     font-family: 'Work Sans';
-	margin-top: 20px;
+	
 }
 .titleModalGallery{
 	display: flex;
@@ -302,6 +309,7 @@ h4{
 	cursor: pointer;
 	border: none;
 	border-radius: 30px;
+	margin-bottom: 10px;
 }
 .ajoutImage{
     background-color:#1D6154;
@@ -327,15 +335,16 @@ h4{
     font-family: 'Syne';
 	display: none;
 }
-
 .windowAjoutImg{
 	margin-top: 40px;
 	width: 70%;
-    height: 60%;
+    height: 100%;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
 }
-.imageSpace{
+.spaceImage{
 	width: 420px;
 	height: 169px;
 	background-color: #E8F1F6;
@@ -344,11 +353,11 @@ h4{
 	justify-content: center;
 	align-items: center;
 }
-.imageSpace i{
+.spaceImage i{
 	width: 76px;
 	height: 76px;
 }
-.imageSpace img{
+.spaceImage img{
 	width: 50%;
 	height: 100%;
 	object-fit: cover;
@@ -382,6 +391,8 @@ h4{
 	margin-bottom: 20px;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	gap: 20px;
 }
 .windowAjoutImg input {
 	height: 50px;
@@ -402,7 +413,10 @@ h4{
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
+.formSpace{
+	height: auto;
+	width: 100%;;
+}
 /*-------------------------------------------------------------------------*/
 
 
