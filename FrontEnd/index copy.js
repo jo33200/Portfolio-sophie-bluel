@@ -76,9 +76,9 @@ btnCloseModal.addEventListener("click", ()=> {
 formModal.addEventListener("submit", function (event){
     event.preventDefault()
     ajouterImage()
+    modal.style.display="none";
 });
 previousButton.addEventListener("click", () =>{
-    imageSpace.innerHTML='';
     formSpace.innerHTML="";
     modal.style.display="block";
     windowModal.style.display="flex";
@@ -162,14 +162,13 @@ function ajoutImage() {
                 if(!response.ok){
                    alert("l'image à bien été ajouté") 
                 // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
-                return recupererImagesDepuisAPI();
+                await recupererImagesDepuisAPI();
                 }
             })
             .catch(error => {
                 console.error("Erreur lors de l'ajout de l'image :", error);
             });
 }
-recupererImagesDepuisAPI();
 // -------------------------------------------------------- USER DISPLAY
 
 // Fonction pour recuperer les images depuis l'API
@@ -271,11 +270,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //---------------------------------------------------------Display admin
 
-//-----------------------Variable générales
-
 // récupérer le token dans le stockage local
 let token = localStorage.getItem("Token")
-//faire disparaitre les filters
 
 // condition de vérification du login
 const storedToken = localStorage.getItem("Token");
@@ -284,26 +280,7 @@ if (storedToken && TokenExpiration && Date.now() < TokenExpiration){
     displayAdmin()
 }
 
-
-
-//------------------------------------------------------ Modal gallery
-
-//faire apparaitre la modal avec l'évènement clic sur bouton modifier
-//variables génarales
-    
-    
-    
-
-//----------------------------------------------------------- Modal d'ajout d'image
-
-// faire apparaitre une modal pour rajouter une image
-// Créez de nouveaux éléments
-    
-
-//faire disparaitre la modal
-    
-   // Ajoutez un écouteur d'événements au clic sur document
-    
+//------------------------------------------------------ Modal gallery  
     
 //afficher les img dans la modal
 function afficherImagesDansModal(works){
@@ -337,10 +314,6 @@ function afficherImagesDansModal(works){
         });
     });
 }
-
-// API-------------------------------------Ajout d'image dans la gallery
-
-
 
 // API-------------------------------------Suppression d'image dans la gallery
 
