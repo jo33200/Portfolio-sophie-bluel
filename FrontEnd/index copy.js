@@ -99,18 +99,20 @@ function preparFormAjout(){
     formAjoutImage.id="formAjoutImage"
     formAjoutImage.innerHTML=`
     <div class="spaceImage">
-    <i class="fa-regular", "fa-image"></i>
-    <input id="fileImage" type="file" required >
+    <i class="fa-regular fa-image"></i>
+    <label for="fileImage" class="btnAjoutPhoto">+ Ajouter photo<input id="fileImage" type="file" required ></label>
     <span>jpg, png : 4mo max</span></div>
-    <input id="titreImage" type="text" placeholder="titre de l'image" required >
+    <div id="titleImage"><label>Titre</label>
+    <input id="titreImage" type="text" required ></div>
+    <div id="categoryImage"><label>Catégorie</label>
     <select id="categorySelect">
-    <option value=""> choisir catégorie </option>
+    <option value="">  </option>
     <option value="Objet">Objet</option>
     <option value="Appartement">Appartement </option>
     <option value="Hôtel et restaurant">Hôtel et restaurant </option>
-    </select>
+    </select></div>
     <div class="separLine"></div>
-    <button type="submit"> Valider </button>`
+    <button id="btnValidationAjoutImage" type="submit"> Valider </button>`
     
     windowModalAjout.appendChild(formAjoutImage);
     const fileImage = formAjoutImage.querySelector('#fileImage');
