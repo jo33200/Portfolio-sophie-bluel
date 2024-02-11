@@ -58,6 +58,7 @@ modifyButton.addEventListener("click", () => {
     windowModal.style.display="flex";
     modalHome.style.display="flex";
     windowModalAjout.style.display="none";
+    previousButton.style.opacity="0";
     
 });
 btnOuvrirAjout.addEventListener("click", ()=> {
@@ -65,6 +66,7 @@ btnOuvrirAjout.addEventListener("click", ()=> {
     windowModal.style.display="flex";
     modalHome.style.display="none";
     windowModalAjout.style.display="flex";
+    previousButton.style.opacity="1";
     preparFormAjout();
 });
 
@@ -79,11 +81,11 @@ formModal.addEventListener("submit", function (event){
     modal.style.display="none";
 });
 previousButton.addEventListener("click", () =>{
-    formSpace.innerHTML="";
     modal.style.display="block";
     windowModal.style.display="flex";
     modalHome.style.display="flex";
     windowModalAjout.style.display="none";
+    previousButton.style.opacity="0";
 });
 modal.addEventListener('click', (event) => {
     // Vérifiez si l'élément cliqué n'est pas à l'intérieur de la fenêtre modale
@@ -95,8 +97,15 @@ modal.addEventListener('click', (event) => {
 
 //---------------------------------------------------------FUNCTIONS MODAL
 function preparFormAjout(){
+    // Vérifier s'il existe déjà un formulaire dans windowModalAjout
+    const existingForm = windowModalAjout.querySelector("#formAjoutImage");
+    // Si le formulaire existe déjà, ne rien faire
+    if (existingForm) {
+        return;
+    }
     const formAjoutImage= document.createElement("form")
     formAjoutImage.id="formAjoutImage"
+    formAjoutImage.innerHTML="";
     formAjoutImage.innerHTML=`
     <div class="spaceImage">
     <i class="fa-regular fa-image"></i>
@@ -113,7 +122,6 @@ function preparFormAjout(){
     </select></div>
     <div class="separLine"></div>
     <button id="btnValidationAjoutImage" type="submit"> Valider </button>`
-    
     windowModalAjout.appendChild(formAjoutImage);
     const fileImage = formAjoutImage.querySelector('#fileImage');
     const spaceImage = formAjoutImage.querySelector(".spaceImage");
