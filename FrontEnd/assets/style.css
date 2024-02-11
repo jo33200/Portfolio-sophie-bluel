@@ -379,6 +379,7 @@ h4{
 	font-size: 14px;
 	font-family: 'work Sans';
 	font-weight:400;
+	cursor: pointer;
 }
 .windowAjoutImg form{
 	width: 100%;
@@ -434,7 +435,7 @@ h4{
 	font-size: 14px;
     font-weight: bold;
     font-family: 'Syne';
-
+}
 /*-------------------------------------------------------------------------*/
 
 
