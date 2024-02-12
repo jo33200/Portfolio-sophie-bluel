@@ -80,11 +80,12 @@ btnOuvrirAjout.addEventListener("click", ()=> {
 btnCloseModal.addEventListener("click", ()=> {
     modal.style.display="none";
 });
-/*formModal.addEventListener("submit", function (event){
+formModal.addEventListener("submit", function (event){
     event.preventDefault()
     ajouterImage()
-    modal.style.display="none";
-});*/
+    modal.style.display="block";
+    modalHome.style.display="flex";
+});
 previousButton.addEventListener("click", () =>{
     modal.style.display="block";
     windowModal.style.display="flex";
@@ -102,7 +103,6 @@ modal.addEventListener('click', (event) => {
 
 //---------------------------------------------------------FUNCTIONS MODAL
 function preparFormAjout(){
-    // Vérifier s'il existe déjà un formulaire dans windowModalAjout
     const existingForm = windowModalAjout.querySelector("#formAjoutImage");
     // Si le formulaire existe déjà, ne rien faire
     if (existingForm) {
@@ -128,8 +128,12 @@ function preparFormAjout(){
     <div class="separLine"></div>
     <button id="btnValidationAjoutImage" type="submit"> Valider </button>`
     windowModalAjout.appendChild(formAjoutImage);
-    const fileImage = formAjoutImage.querySelector('#fileImage');
-    const spaceImage = formAjoutImage.querySelector(".spaceImage");
+    addFileInputEventListener();
+}
+
+function addFileInputEventListener() {
+    const fileImage = document.querySelector('#fileImage');
+    const spaceImage = document.querySelector(".spaceImage");
     fileImage.addEventListener('change', (event) => {
         const file = event.target.files[0];
         // Vérifiez si un fichier a été sélectionné
@@ -149,15 +153,13 @@ function preparFormAjout(){
             reader.readAsDataURL(file);
         }
     });
-    formAjoutImage.addEventListener("submit", function (event){
-        event.preventDefault()
-        ajoutImage()
-        afficherImagesSurInterface(works)
-    })
 }
 
 function ajoutImage() {
-    const fileInput = document.querySelector("#fileImage");
+    const formAjoutImage = document.querySelector("#formAjoutImage");
+    console.log("Form Ajout Image:", formAjoutImage);
+    const fileInput = formAjoutImage.querySelector("#fileImage");
+    console.log("File Input:", fileInput);
     // Vérifier si un fichier est sélectionné
     if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
         console.error("Aucun fichier sélectionné.");
@@ -181,19 +183,24 @@ function ajoutImage() {
         };
         // Envoyez la requête POST à l'API
         fetch(urlAPI, options)
-            .then(async(response)=>{
-                if(!response.ok){
-                   alert("l'image à bien été ajouté") 
-                // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
-                await recupererImagesDepuisAPI();
-                }
-            })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erreur lors de l'ajout de l'image.");
+            }
+            return response.json();
+        })
+        .then(async () => {
+            // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
+            await recupererImagesDepuisAPI();
+            console.log("galerie mise a jour")
+            afficherImagesSurInterface(works)
+            alert("L'image a bien été ajoutée.");
+        })
             .catch(error => {
                 console.error("Erreur lors de l'ajout de l'image :", error);
             });
 }
-// Appeler la fonction pour récupérer et afficher les images
-recupererImagesDepuisAPI();
+
 // -------------------------------------------------------- USER DISPLAY
 
 // Fonction pour afficher les images sur l'interface utilisateur
