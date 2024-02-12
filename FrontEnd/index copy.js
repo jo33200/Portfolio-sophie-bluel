@@ -192,8 +192,9 @@ function ajoutImage() {
         .then(async () => {
             // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
             await recupererImagesDepuisAPI();
-            console.log("galerie mise a jour")
-            afficherImagesSurInterface(works)
+            console.log("galerie mise a jour");
+            afficherImagesSurInterface(works);
+            afficherImagesDansModal(works);
             alert("L'image a bien été ajoutée.");
         })
             .catch(error => {
