@@ -5,7 +5,6 @@ const titlePortfolio = document.getElementById("portfolio");
 const filtersRemove = document.querySelector("#filters");
 const projectTitle = document.querySelector(".titreProjet")
 const conteneurImages = document.querySelector(".gallery");
-
 const divTitreProjet = document.createElement("div");
     divTitreProjet.classList.add("titreLoginProjet")
 const modifyButton = document.createElement("button");
@@ -33,22 +32,32 @@ const modalContent = document.querySelector(".modalContent")
 const windowModalAjout = document.querySelector(".windowAjoutImg")
 const windowModal = document.querySelector(".windowModal")
 const titleModalGallery = document.querySelector(".titleModalGallery")
-
-
 const titleModalAjout = document.createElement("h4")
     titleModalAjout.textContent="Ajout photo";
+    windowModalAjout.appendChild(titleModalAjout);
 const imageSpace = document.createElement("div");
     imageSpace.classList.add("imageSpace");
 
-windowModalAjout.appendChild(titleModalAjout);
-
-function displayAdmin() {  
-    // faire disparaitre les filtres
-    document.querySelector("#filters").style.display = "none";
-    // faire apparaitre les éléments créé dans index.html
-    bannerEdit.style.display="flex";
-    modifyButton.style.display="flex";
-    
+// Fonction pour recuperer les images depuis l'API
+function recupererImagesDepuisAPI() {
+    const urlAPI = "http://localhost:5678/api/works";
+    return fetch(urlAPI)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur de récupération des images : ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // une fois donnée récupere, les stocker dans une variable works
+            works=data
+        // Une fois les images récupérées, les afficher sur l'interface utilisateur
+            afficherImagesSurInterface(works);
+            afficherImagesDansModal(works);
+        })
+        .catch(error => {
+            console.error("Erreur lors de la récupération des images depuis l'API :", error);
+        });
 }
 
 // ----------------------------------------------------ADDEVENTLISTENER
@@ -59,7 +68,6 @@ modifyButton.addEventListener("click", () => {
     modalHome.style.display="flex";
     windowModalAjout.style.display="none";
     previousButton.style.opacity="0";
-    
 });
 btnOuvrirAjout.addEventListener("click", ()=> {
     modal.style.display="block";
@@ -69,17 +77,14 @@ btnOuvrirAjout.addEventListener("click", ()=> {
     previousButton.style.opacity="1";
     preparFormAjout();
 });
-
 btnCloseModal.addEventListener("click", ()=> {
     modal.style.display="none";
-    formSpace.innerHTML="";
 });
-
-formModal.addEventListener("submit", function (event){
+/*formModal.addEventListener("submit", function (event){
     event.preventDefault()
     ajouterImage()
     modal.style.display="none";
-});
+});*/
 previousButton.addEventListener("click", () =>{
     modal.style.display="block";
     windowModal.style.display="flex";
@@ -133,6 +138,7 @@ function preparFormAjout(){
             // Gérez l'événement de chargement de fichier
             reader.onload = (e) => {
                 const imagePreview = document.createElement('img');
+                    imagePreview.classList.add("imagePreview");
                 imagePreview.src = e.target.result;    
                 // Supprimez le contenu existant de la zone imageSpace
                 spaceImage.innerHTML = '';
@@ -146,14 +152,21 @@ function preparFormAjout(){
     formAjoutImage.addEventListener("submit", function (event){
         event.preventDefault()
         ajoutImage()
+        afficherImagesSurInterface(works)
     })
 }
 
 function ajoutImage() {
+    const fileInput = document.querySelector("#fileImage");
+    // Vérifier si un fichier est sélectionné
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        console.error("Aucun fichier sélectionné.");
+        return;
+    }
     const formData = new FormData();
-        formData.append('image', document.querySelector("#fileImage")) // récupère l'image' sélectionné
-        formData.append('title',titreImage.value); // récupère le titre de l'image
-        formData.append('category', categorySelect.value); // récupère la catégorie de l'image
+        formData.append('image', fileInput.files[0]) // récupère l'image' sélectionné
+        formData.append('title',document.getElementById("titreImage").value); // récupère le titre de l'image
+        formData.append('category', document.getElementById("categorySelect").value); // récupère la catégorie de l'image
         //récupération du token
         const token = localStorage.getItem("Token"); 
         // URL de l'API 
@@ -179,29 +192,9 @@ function ajoutImage() {
                 console.error("Erreur lors de l'ajout de l'image :", error);
             });
 }
+// Appeler la fonction pour récupérer et afficher les images
+recupererImagesDepuisAPI();
 // -------------------------------------------------------- USER DISPLAY
-
-// Fonction pour recuperer les images depuis l'API
-function recupererImagesDepuisAPI() {
-    const urlAPI = "http://localhost:5678/api/works";
-    return fetch(urlAPI)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erreur de récupération des images : ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // une fois donnée récupere, les stocker dans une variable works
-            works=data
-        // Une fois les images récupérées, les afficher sur l'interface utilisateur
-            afficherImagesSurInterface(works);
-            afficherImagesDansModal(works);
-        })
-        .catch(error => {
-            console.error("Erreur lors de la récupération des images depuis l'API :", error);
-        });
-}
 
 // Fonction pour afficher les images sur l'interface utilisateur
 function afficherImagesSurInterface(works) {
@@ -222,6 +215,7 @@ function afficherImagesSurInterface(works) {
         title.textContent=work.title
         articleElement.appendChild(title)
     });
+    console.log("mise a jour des images dans l'interface")
 }
 
 // --------------------------------------------------------------- FILTERS
@@ -280,9 +274,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //---------------------------------------------------------Display admin
 
+// fonction pour faire apparaitre les options de l'admin
+function displayAdmin() {  
+    // faire disparaitre les filtres
+    document.querySelector("#filters").style.display = "none";
+    // faire apparaitre les éléments créé dans index.html
+    bannerEdit.style.display="flex";
+    modifyButton.style.display="flex";
+}
+
 // récupérer le token dans le stockage local
 let token = localStorage.getItem("Token")
-
 // condition de vérification du login
 const storedToken = localStorage.getItem("Token");
 const TokenExpiration = localStorage.getItem("TokenExpiration");
