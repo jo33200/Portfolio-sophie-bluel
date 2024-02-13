@@ -159,7 +159,7 @@ function addFileInputEventListener() {
     });
 }
 
-function ajoutImage() {
+async function ajoutImage() {
     const formAjoutImage = document.querySelector("#formAjoutImage");
     const fileInput = formAjoutImage.querySelector("#fileImage");
     if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
@@ -175,8 +175,11 @@ function ajoutImage() {
         console.log("taille image trop grande")
         }else{
     let formData = new FormData();
+    console.log('image', fileInput.files[0])
     formData.append('image', fileInput.files[0]);
+    console.log('title', document.getElementById("titreImage").value)
     formData.append('title', document.getElementById("titreImage").value);
+    console.log('category', document.getElementById("categorySelect").value)
     formData.append('category', document.getElementById("categorySelect").value);
     const token = localStorage.getItem("Token");
     const urlAPI = "http://localhost:5678/api/works";
@@ -188,21 +191,26 @@ function ajoutImage() {
         body: formData,
        
     };
-    fetch(urlAPI, options)
-        .then(async (response) => {
+    try{
+    const res= await fetch(urlAPI, options)
             console.log("formData", formData)
             console.log("response", response)
             if (response.ok) { 
                 alert("L'image a bien été ajoutée.");
-                await response.json();
+                response.json();
                 recupererImagesDepuisAPI();
                 console.log("galerie mise à jour");
                 afficherImagesSurInterface(works);
                 afficherImagesDansModal(works);
             }else{
-                console.log("erreur ajout", response)
-            }
-        })
+                console.log("erreur ajout", response.status)
+            } 
+            const responseData = await res.json()
+            console.log(responseData)
+    } catch(error){
+        console.log("erreur lors de l'envoi", error)
+    }
+    
     }
 }
 
