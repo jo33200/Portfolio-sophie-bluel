@@ -50,6 +50,7 @@ function recupererImagesDepuisAPI() {
             return response.json();
         })
         .then(data => {
+            console.log("Données récupérées depuis l'API :", data);
             // une fois donnée récupere, les stocker dans une variable works
             works=data
         // Une fois les images récupérées, les afficher sur l'interface utilisateur
@@ -127,7 +128,7 @@ function preparerFormAjout() {
             <button type="submit">Valider</button>`;
         windowModal.appendChild(formAjoutImage);
 
-        formAjoutImage.addEventListener("submit", function(event) {
+        formAjoutImage.addEventListener("submit", async(event) => {
             event.preventDefault();
             ajoutImage();
         });
@@ -160,49 +161,49 @@ function addFileInputEventListener() {
 
 function ajoutImage() {
     const formAjoutImage = document.querySelector("#formAjoutImage");
-    console.log("Form Ajout Image:", formAjoutImage);
     const fileInput = formAjoutImage.querySelector("#fileImage");
-    console.log("File Input:", fileInput);
-    // Vérifier si un fichier est sélectionné
     if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
         console.error("Aucun fichier sélectionné.");
         return;
     }
-    const formData = new FormData();
-        formData.append('image', fileInput.files[0]) // récupère l'image' sélectionné
-        formData.append('title',document.getElementById("titreImage").value); // récupère le titre de l'image
-        formData.append('category', document.getElementById("categorySelect").value); // récupère la catégorie de l'image
-        //récupération du token
-        const token = localStorage.getItem("Token"); 
-        // URL de l'API 
-        const urlAPI = "http://localhost:5678/api/works";
-        // Options de la requête POST
-        const options ={
-            method:'POST',
-            body: formData,
-            headers:{
-                'Authorization': `Bearer ${token}` // Ajouter jeton d'authentification
+    console.log("image", fileInput.files[0])
+    console.log("title",document.getElementById("titreImage").value)
+    console.log('category', document.getElementById("categorySelect").value)
+    if(fileInput.files[0]==="" ||document.getElementById("titreImage").value==="" ||document.getElementById("categorySelect").value===""  ){
+        console.log("formData valide")
+    }else if(fileInput.files[0].size>4*1024*1024){
+        console.log("taille image trop grande")
+        }else{
+    let formData = new FormData();
+    formData.append('image', fileInput.files[0]);
+    formData.append('title', document.getElementById("titreImage").value);
+    formData.append('category', document.getElementById("categorySelect").value);
+    const token = localStorage.getItem("Token");
+    const urlAPI = "http://localhost:5678/api/works";
+    const options = {
+        method: "POST",
+         headers: {
+            Authorization: `Bearer ${token}`
+        },
+        body: formData,
+       
+    };
+    fetch(urlAPI, options)
+        .then(async (response) => {
+            console.log("formData", formData)
+            console.log("response", response)
+            if (response.ok) { 
+                alert("L'image a bien été ajoutée.");
+                await response.json();
+                recupererImagesDepuisAPI();
+                console.log("galerie mise à jour");
+                afficherImagesSurInterface(works);
+                afficherImagesDansModal(works);
+            }else{
+                console.log("erreur ajout", response)
             }
-        };
-        // Envoyez la requête POST à l'API
-        fetch(urlAPI, options)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de l'ajout de l'image.");
-            }
-            return response.json();
         })
-        .then(async () => {
-            // Si la requête est réussie, mettez à jour la galerie en récupérant à nouveau les images depuis l'API
-            await recupererImagesDepuisAPI();
-            console.log("galerie mise a jour");
-            afficherImagesSurInterface(works);
-            afficherImagesDansModal(works);
-            alert("L'image a bien été ajoutée.");
-        })
-            .catch(error => {
-                console.error("Erreur lors de l'ajout de l'image :", error);
-            });
+    }
 }
 
 // -------------------------------------------------------- USER DISPLAY
@@ -356,6 +357,3 @@ function supprimerImage(imageId) {
             console.error("Erreur lors de la suppression de l'image :", error);
         });
 }
-
-// Appeler la fonction pour récupérer et afficher les images
-recupererImagesDepuisAPI();
