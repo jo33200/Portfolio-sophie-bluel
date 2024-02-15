@@ -1,4 +1,6 @@
 // -------------------------------------------------------- GLOBAL VARIABLES
+// récupérer le token dans le stockage local
+let token = localStorage.getItem("Token")
 //Variables display admin
 const bannerEdit = document.querySelector(".bannerEdit") 
 const titlePortfolio = document.getElementById("portfolio");
@@ -117,16 +119,22 @@ function preparerFormAjout() {
         const formAjoutImage = document.createElement("form");
         formAjoutImage.id = "formAjoutImage";
         formAjoutImage.innerHTML = `
-            <label for="fileImage" class="btnAjoutPhoto">+ Ajouter photo<input id="fileImage" type="file" required></label>
-            <input id="titreImage" type="text" placeholder="Titre" required>
-            <select id="categorySelect">
-                <option value="">Catégorie</option>
-                <option value="Objet">Objet</option>
-                <option value="Appartement">Appartement</option>
-                <option value="Hôtel et restaurant">Hôtel et restaurant</option>
-            </select>
-            <button type="submit">Valider</button>`;
-        windowModal.appendChild(formAjoutImage);
+        <div class="spaceImage">
+        <i class="fa-regular fa-image"></i>
+        <label for="fileImage" class="btnAjoutPhoto">+ Ajouter photo<input id="fileImage" type="file" required ></label>
+        <span>jpg, png : 4mo max</span></div>
+        <div id="titleImage"><label>Titre</label>
+        <input id="titreImage" type="text" required ></div>
+        <div id="categoryImage"><label>Catégorie</label>
+        <select id="categorySelect">
+        <option value="">  </option>
+        <option value="Objet">Objet</option>
+        <option value="Appartement">Appartement </option>
+        <option value="Hôtel et restaurant">Hôtel et restaurant </option>
+        </select></div>
+        <div class="separLine"></div>
+        <button id="btnValidationAjoutImage" type="submit"> Valider </button>`;
+        windowModalAjout.appendChild(formAjoutImage);
 
         formAjoutImage.addEventListener("submit", async(event) => {
             event.preventDefault();
@@ -189,7 +197,6 @@ async function ajoutImage() {
             Authorization: `Bearer ${token}`
         },
         body: formData,
-       
     };
     try{
     const res= await fetch(urlAPI, options)
@@ -200,8 +207,6 @@ async function ajoutImage() {
                 response.json();
                 recupererImagesDepuisAPI();
                 console.log("galerie mise à jour");
-                afficherImagesSurInterface(works);
-                afficherImagesDansModal(works);
             }else{
                 console.log("erreur ajout", response.status)
             } 
@@ -291,10 +296,22 @@ function displayAdmin() {
     // faire apparaitre les éléments créé dans index.html
     bannerEdit.style.display="flex";
     modifyButton.style.display="flex";
-}
 
-// récupérer le token dans le stockage local
-let token = localStorage.getItem("Token")
+    const log = document.getElementById("log");
+    log.innerText="logout";
+    log.setAttribute("href", "index.html");
+    log.addEventListener("click", logoutHandler);
+        }
+
+// fonction pour gérer la déconnexion
+function logoutHandler(event) {
+    localStorage.removeItem("Token");
+    alert("Vous êtes déconnecté.");
+    const log = document.getElementById("log");
+    log.removeEventListener("click", logoutHandler);
+    log.innerText = "login"; 
+}     
+
 // condition de vérification du login
 const storedToken = localStorage.getItem("Token");
 const TokenExpiration = localStorage.getItem("TokenExpiration");
