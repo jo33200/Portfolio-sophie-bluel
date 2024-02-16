@@ -94,6 +94,7 @@ function ouvrirModalAjout() {
 }
 btnCloseModal.addEventListener("click", ()=> {
     modal.style.display="none";
+    resetForm()
 });
 previousButton.addEventListener("click", () =>{
     modal.style.display="block";
@@ -101,6 +102,7 @@ previousButton.addEventListener("click", () =>{
     modalHome.style.display="flex";
     windowModalAjout.style.display="none";
     previousButton.style.opacity="0";
+    resetForm()
 });
 modal.addEventListener('click', (event) => {
     // Vérifiez si l'élément cliqué n'est pas à l'intérieur de la fenêtre modale
@@ -116,7 +118,6 @@ function preparerFormAjout() {
     if (!document.querySelector("#formAjoutImage")) {
         const formAjoutImage = document.createElement("form");
         formAjoutImage.id = "formAjoutImage";
-        formAjoutImage.innerHTML="";
         formAjoutImage.innerHTML = `
         <div class="spaceImage">
         <i class="fa-regular fa-image"></i>
@@ -140,6 +141,21 @@ function preparerFormAjout() {
             ajoutImage();
         });
         addFileInputEventListener();
+    }
+}
+
+function resetForm() {
+    document.getElementById("formAjoutImage").reset();
+    const spaceImage = document.querySelector(".spaceImage");
+    const labelWithout = spaceImage.querySelector(".btnAjoutPhoto");
+    const iconWithout = spaceImage.querySelector(".fa-regular.fa-image");
+    const formatWithout = document.getElementById("formatImage");
+    formatWithout.style.display = "block";
+    iconWithout.style.display = "block";
+    labelWithout.style.display = "flex";
+    const imagePreview = spaceImage.querySelector(".imagePreview");
+    if (imagePreview) {
+        imagePreview.remove();
     }
 }
 
@@ -207,6 +223,7 @@ async function ajoutImage() {
                 modal.style.display="none";
                 setModalHome();
                 afficherAlerte("l'image est ajouté avec succès!");
+                resetForm();
             }else{
                 console.log("erreur ajout", res.status)
             } 
