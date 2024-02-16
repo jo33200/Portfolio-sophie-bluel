@@ -50,7 +50,7 @@
         if (token){
 
             // Calculer le timestamp d'expiration (par exemple, 1 heure à partir de maintenant)
-            const expirationTime = Date.now() +24*60*60*1000;// 1 heure en millisecondes
+            const expirationTime = Date.now() +60*60*1000;// 1 heure en millisecondes
             
             // Stocker le token et le timestamp d'expiration dans le local storage
             localStorage.setItem("Token", token)

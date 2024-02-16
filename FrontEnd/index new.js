@@ -41,6 +41,7 @@ const titleModalAjout = document.createElement("h4")
 const imageSpace = document.createElement("div");
     imageSpace.classList.add("imageSpace");
 
+
 // Fonction pour recuperer les images depuis l'API
 function recupererImagesDepuisAPI() {
     const urlAPI = "http://localhost:5678/api/works";
@@ -88,6 +89,7 @@ function ouvrirModalAjout() {
     windowModal.style.display = "flex";
     previousButton.style.opacity="1";
     preparerFormAjout();
+    
 }
 btnCloseModal.addEventListener("click", ()=> {
     modal.style.display="none";
@@ -122,15 +124,15 @@ function preparerFormAjout() {
         <div class="spaceImage">
         <i class="fa-regular fa-image"></i>
         <label for="fileImage" class="btnAjoutPhoto">+ Ajouter photo<input id="fileImage" type="file" required ></label>
-        <span>jpg, png : 4mo max</span></div>
+        <span id="formatImage" >jpg, png : 4mo max</span></div>
         <div id="titleImage"><label>Titre</label>
         <input id="titreImage" type="text" required ></div>
         <div id="categoryImage"><label>Catégorie</label>
         <select id="categorySelect">
         <option value="">  </option>
-        <option value="Objet">Objet</option>
-        <option value="Appartement">Appartement </option>
-        <option value="Hôtel et restaurant">Hôtel et restaurant </option>
+        <option value="1">Objet</option>
+        <option value="2">Appartement </option>
+        <option value="3">Hôtel et restaurant </option>
         </select></div>
         <div class="separLine"></div>
         <button id="btnValidationAjoutImage" type="submit"> Valider </button>`;
@@ -140,6 +142,7 @@ function preparerFormAjout() {
             event.preventDefault();
             ajoutImage();
         });
+        addFileInputEventListener();
     }
 }
 
@@ -155,9 +158,14 @@ function addFileInputEventListener() {
             reader.onload = (e) => {
                 const imagePreview = document.createElement('img');
                     imagePreview.classList.add("imagePreview");
-                imagePreview.src = e.target.result;    
-                // Supprimez le contenu existant de la zone imageSpace
-                spaceImage.innerHTML = '';
+                imagePreview.src = e.target.result;
+                //remplacer les élément en les display="none" 
+                const labelWithout = spaceImage.querySelector(".btnAjoutPhoto");
+                const iconWithout = spaceImage.querySelector(".fa-regular", "fa-image");
+                const formatWithout = document.getElementById("formatImage");
+                formatWithout.style.display="none";
+                iconWithout.style.display="none";
+                labelWithout.style.display="none";
                 // Ajoutez l'image prévisualisée à la zone imageSpace
                 spaceImage.appendChild(imagePreview);
             };
@@ -174,20 +182,14 @@ async function ajoutImage() {
         console.error("Aucun fichier sélectionné.");
         return;
     }
-    console.log("image", fileInput.files[0])
-    console.log("title",document.getElementById("titreImage").value)
-    console.log('category', document.getElementById("categorySelect").value)
     if(fileInput.files[0]==="" ||document.getElementById("titreImage").value==="" ||document.getElementById("categorySelect").value===""  ){
         console.log("formData valide")
     }else if(fileInput.files[0].size>4*1024*1024){
         console.log("taille image trop grande")
         }else{
     let formData = new FormData();
-    console.log('image', fileInput.files[0])
     formData.append('image', fileInput.files[0]);
-    console.log('title', document.getElementById("titreImage").value)
     formData.append('title', document.getElementById("titreImage").value);
-    console.log('category', document.getElementById("categorySelect").value)
     formData.append('category', document.getElementById("categorySelect").value);
     const token = localStorage.getItem("Token");
     const urlAPI = "http://localhost:5678/api/works";
@@ -200,22 +202,17 @@ async function ajoutImage() {
     };
     try{
     const res= await fetch(urlAPI, options)
-            console.log("formData", formData)
-            console.log("response", response)
-            if (response.ok) { 
+            if (res.ok) { 
                 alert("L'image a bien été ajoutée.");
-                response.json();
+                res.json();
                 recupererImagesDepuisAPI();
-                console.log("galerie mise à jour");
             }else{
-                console.log("erreur ajout", response.status)
+                console.log("erreur ajout", res.status)
             } 
             const responseData = await res.json()
-            console.log(responseData)
     } catch(error){
         console.log("erreur lors de l'envoi", error)
     }
-    
     }
 }
 
