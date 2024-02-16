@@ -116,6 +116,7 @@ function preparerFormAjout() {
     if (!document.querySelector("#formAjoutImage")) {
         const formAjoutImage = document.createElement("form");
         formAjoutImage.id = "formAjoutImage";
+        formAjoutImage.innerHTML="";
         formAjoutImage.innerHTML = `
         <div class="spaceImage">
         <i class="fa-regular fa-image"></i>
@@ -206,7 +207,6 @@ async function ajoutImage() {
                 modal.style.display="none";
                 setModalHome();
                 afficherAlerte("l'image est ajouté avec succès!");
-
             }else{
                 console.log("erreur ajout", res.status)
             } 
@@ -420,6 +420,7 @@ function supprimerImageConfirmed(imageId) {
             const deletedImage = document.getElementById(imageId);
             deletedImage.remove();
             setModalHome();
+            recupererImagesDepuisAPI()
             afficherAlerte("L'image a été supprimée avec succès!");
         })
         .catch(error => {
