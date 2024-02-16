@@ -28,7 +28,6 @@ const modal=document.querySelector(".modal");
 const modalHome=document.querySelector(".modalHome")
 const btnCloseModal=document.querySelector(".fa-xmark");
 const previousButton = document.querySelector(".fa-arrow-left")
-const formModal = document.createElement("form");
 const btnOuvrirAjout=document.querySelector(".ajoutImage")
 const modalContent = document.querySelector(".modalContent")
 const windowModalAjout = document.querySelector(".windowAjoutImg")
@@ -40,7 +39,6 @@ const titleModalAjout = document.createElement("h4")
     windowModalAjout.appendChild(titleModalAjout);
 const imageSpace = document.createElement("div");
     imageSpace.classList.add("imageSpace");
-
 
 // Fonction pour recuperer les images depuis l'API
 function recupererImagesDepuisAPI() {
@@ -76,12 +74,15 @@ function setupEventListeners() {
     btnCloseModal.addEventListener("click", () => modal.style.display = "none");
 }
 modifyButton.addEventListener("click", () => {
+    setModalHome();
+});
+function setModalHome(){
     modal.style.display="block";
     windowModal.style.display="flex";
     modalHome.style.display="flex";
     windowModalAjout.style.display="none";
     previousButton.style.opacity="0";
-});
+}
 function ouvrirModalAjout() {
     modal.style.display = "block";
     modalHome.style.display="none";
@@ -93,12 +94,6 @@ function ouvrirModalAjout() {
 }
 btnCloseModal.addEventListener("click", ()=> {
     modal.style.display="none";
-});
-formModal.addEventListener("submit", function (event){
-    event.preventDefault()
-    ajoutImage()
-    modal.style.display="block";
-    modalHome.style.display="flex";
 });
 previousButton.addEventListener("click", () =>{
     modal.style.display="block";
@@ -116,6 +111,7 @@ modal.addEventListener('click', (event) => {
 });
 
 //---------------------------------------------------------FUNCTIONS MODAL
+
 function preparerFormAjout() {
     if (!document.querySelector("#formAjoutImage")) {
         const formAjoutImage = document.createElement("form");
@@ -138,7 +134,7 @@ function preparerFormAjout() {
         <button id="btnValidationAjoutImage" type="submit"> Valider </button>`;
         windowModalAjout.appendChild(formAjoutImage);
 
-        formAjoutImage.addEventListener("submit", async(event) => {
+        formAjoutImage.addEventListener("submit", (event) => {
             event.preventDefault();
             ajoutImage();
         });
@@ -203,18 +199,50 @@ async function ajoutImage() {
     try{
     const res= await fetch(urlAPI, options)
             if (res.ok) { 
-                alert("L'image a bien été ajoutée.");
                 res.json();
-                recupererImagesDepuisAPI();
+                recupererImagesDepuisAPI()
+                ajouterImageSurInterface(works);
+                ajouterImageDansModal(works)
+                modal.style.display="none";
+                setModalHome();
+                afficherAlerte("l'image est ajouté avec succès!");
+
             }else{
                 console.log("erreur ajout", res.status)
             } 
-            const responseData = await res.json()
     } catch(error){
         console.log("erreur lors de l'envoi", error)
     }
     }
 }
+
+function ajouterImageSurInterface(work) {
+    // Créer un nouvel élément article pour la nouvelle image
+    const articleElement = document.createElement("article");
+    articleElement.innerHTML = `
+        <img src="${work.imageUrl}" alt="${work.title}">
+        <h3>${work.title}</h3>`;
+    conteneurImages.appendChild(articleElement);
+}
+function ajouterImageDansModal(work) {
+    // Créer un nouvel élément article pour la nouvelle image
+    const articleElement = document.createElement("article");
+    articleElement.innerHTML = `
+        <img src="${work.imageUrl}" alt="${work.title}">
+        <h3>${work.title}</h3>`;
+    modalContent.appendChild(articleElement);
+}
+
+function afficherAlerte(message) {
+    const modal = document.getElementById("customAlert");
+    const messageBox = document.getElementById("customAlertMessage");
+    messageBox.textContent = message;
+    modal.style.display = "flex";
+    // Masquer la boîte de dialogue après 3 secondes (3000 millisecondes)
+  setTimeout(function() {
+    modal.style.display = "none";
+  }, 3000)
+  }
 
 // -------------------------------------------------------- USER DISPLAY
 
@@ -228,7 +256,6 @@ function afficherImagesSurInterface(works) {
         conteneurImages.appendChild(articleElement);
     });
 }
-
 
 // --------------------------------------------------------------- FILTERS
 
@@ -351,10 +378,27 @@ function afficherImagesDansModal(works){
     });
 }
 
+
+
 // API-------------------------------------Suppression d'image dans la gallery
 
-    // Fonction pour supprimer une image
 function supprimerImage(imageId) {
+    // Afficher la boîte de dialogue de confirmation
+    afficherConfirmationSuppression(imageId);
+}
+
+function afficherConfirmationSuppression(imageId) {
+    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cette image ?");
+    if (confirmation) {
+        // Si l'utilisateur clique sur "Oui", supprimez l'image
+        supprimerImageConfirmed(imageId);
+    } else {
+        // Si l'utilisateur clique sur "Non", ne faites rien
+        return;
+    }
+}
+
+function supprimerImageConfirmed(imageId) {
     // Récupérer le token
     const token = localStorage.getItem("Token");
     // URL de l'API pour supprimer une image spécifique
@@ -372,8 +416,11 @@ function supprimerImage(imageId) {
             if (!response.ok) {
                 throw new Error(`Erreur lors de la suppression de l'image : ${response.status}`);
             }
-            // Recharger les images après la suppression
-            return recupererImagesDepuisAPI();
+            // Supprimer l'image de l'interface utilisateur sans recharger la page
+            const deletedImage = document.getElementById(imageId);
+            deletedImage.remove();
+            setModalHome();
+            afficherAlerte("L'image a été supprimée avec succès!");
         })
         .catch(error => {
             console.error("Erreur lors de la suppression de l'image :", error);
