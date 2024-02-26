@@ -1,6 +1,14 @@
-// -------------------------------------------------------- GLOBAL VARIABLES
+// --------------------------------- GLOBAL VARIABLES -----------------------
+
 // récupérer le token dans le stockage local
 let token = localStorage.getItem("Token")
+
+//Variables filters
+const buttonTous = document.querySelector(".btn-tous");
+const buttonObjets = document.querySelector(".btn-objets");
+const buttonAppart = document.querySelector(".btn-appart");
+const buttonHotel = document.querySelector(".btn-hotel");
+
 //Variables display admin
 const bannerEdit = document.querySelector(".bannerEdit") 
 const titlePortfolio = document.getElementById("portfolio");
@@ -37,10 +45,61 @@ const titleModalGallery = document.querySelector(".titleModalGallery")
 const titleModalAjout = document.createElement("h4")
     titleModalAjout.textContent="Ajout photo";
     windowModalAjout.appendChild(titleModalAjout);
-const imageSpace = document.createElement("div");
-    imageSpace.classList.add("imageSpace");
 
-// Fonction pour recuperer les images depuis l'API
+// ---------------------------------- USER DISPLAY ---------------------------
+
+function afficherImagesSurInterface(works) {
+    conteneurImages.innerHTML = "";
+    works.forEach(work => {
+        const articleElement = document.createElement("article");
+        articleElement.innerHTML = `
+            <img src="${work.imageUrl}" alt="${work.title}">
+            <h3>${work.title}</h3>`;
+        conteneurImages.appendChild(articleElement);
+    });
+}
+
+// ----------------------------------------------------------------- FILTERS
+buttonTous.addEventListener("click", () => {
+    // Afficher toutes les images sur l'interface utilisateur
+    afficherImagesSurInterface(works);
+});
+buttonObjets.addEventListener("click", () => {
+    // Filtrer les œuvres qui ont la catégorie "Objets"
+    const filteredObjets = works.filter(work => work.category.name === "Objets");
+    // Afficher les images filtrées sur l'interface utilisateur
+    afficherImagesSurInterface(filteredObjets);
+});
+buttonAppart.addEventListener("click", () => {
+    // Filtrer les œuvres qui ont la catégorie "Appart"
+    const filteredAppart = works.filter(work => work.category.name === "Appartements");
+    // Afficher les images filtrées sur l'interface utilisateur
+    afficherImagesSurInterface(filteredAppart);
+});
+buttonHotel.addEventListener("click", () => {
+    // Filtrer les œuvres qui ont la catégorie "Hotel"
+    const filteredHotel = works.filter(work => work.category.name === "Hotels & restaurants");
+    // Afficher les images filtrées sur l'interface utilisateur
+    afficherImagesSurInterface(filteredHotel);
+});
+//Animation button filters
+document.addEventListener("DOMContentLoaded", function () {
+    const filterItems = document.querySelectorAll(".filter-item");
+    filterItems.forEach(item => {
+        item.addEventListener("click", function () {
+            // Retirer la classe "active" de tous les éléments
+            filterItems.forEach(item => item.classList.remove("active"));
+            // Ajouter la classe "active" à l'élément cliqué
+            this.classList.add("active");
+            // Appeler la fonction pour appliquer le filtre correspondant
+            const category = this.getAttribute("data-category");
+            filterImages(category);
+        });
+    });
+    // Fonction pour appliquer le filtre correspondant
+    function filterImages(category) {}
+});
+
 function recupererImagesDepuisAPI() {
     const urlAPI = "http://localhost:5678/api/works";
     return fetch(urlAPI)
@@ -51,7 +110,6 @@ function recupererImagesDepuisAPI() {
             return response.json();
         })
         .then(data => {
-            console.log("Données récupérées depuis l'API :", data);
             // une fois donnée récupere, les stocker dans une variable works
             works=data
         // Une fois les images récupérées, les afficher sur l'interface utilisateur
@@ -63,7 +121,7 @@ function recupererImagesDepuisAPI() {
         });
 }
 
-// ----------------------------------------------------ADDEVENTLISTENER
+// ---------------------------------------------------------ADDEVENTLISTENER
 
 document.addEventListener("DOMContentLoaded", () => {
     recupererImagesDepuisAPI();
@@ -88,9 +146,9 @@ function ouvrirModalAjout() {
     modalHome.style.display="none";
     windowModalAjout.style.display="flex";
     windowModal.style.display = "flex";
+    titleModalAjout.style.display="flex";
     previousButton.style.opacity="1";
-    preparerFormAjout();
-    
+    preparerFormAjout();   
 }
 btnCloseModal.addEventListener("click", ()=> {
     modal.style.display="none";
@@ -112,8 +170,67 @@ modal.addEventListener('click', (event) => {
     }
 });
 
-//---------------------------------------------------------FUNCTIONS MODAL
+//----------------------------------- DISPLAY ADMIN -------------------------
 
+// fonction pour faire apparaitre les options de l'admin
+function displayAdmin() {  
+    // faire disparaitre les filtres
+    document.querySelector("#filters").style.display = "none";
+    // faire apparaitre les éléments créé dans index.html
+    bannerEdit.style.display="flex";
+    modifyButton.style.display="flex";
+
+    const log = document.getElementById("log");
+    log.innerText="logout";
+    log.setAttribute("href", "index.html");
+    log.addEventListener("click", logoutHandler);
+}
+// fonction pour gérer la déconnexion
+function logoutHandler(event) {
+    localStorage.removeItem("Token");
+    alert("Vous êtes déconnecté.");
+    const log = document.getElementById("log");
+    log.removeEventListener("click", logoutHandler);
+    log.innerText = "login"; 
+}     
+// condition de vérification du login
+const storedToken = localStorage.getItem("Token");
+const TokenExpiration = localStorage.getItem("TokenExpiration");
+if (storedToken && TokenExpiration && Date.now() < TokenExpiration){
+    displayAdmin()
+}
+
+//--------------------------------------------------------------------- MODAL
+function afficherImagesDansModal(works){
+    //effacer le contenu de la div
+    modalContent.innerHTML="";
+    // Parcourir les images et créer des balises <img> pour chaque image
+    works.forEach(work => {
+        const articleImage = document.createElement("article");
+        modalContent.appendChild(articleImage);
+        articleImage.classList=work.category.name
+        articleImage.setAttribute("id",work.id)
+        // Ajout d'une div noire dans le coin en haut à droite
+        const deleteDiv = document.createElement("div");
+        deleteDiv.classList.add("deleteDiv");
+        articleImage.appendChild(deleteDiv);
+        // ajout de l'icone de suppression
+        const deleteIcone = document.createElement("i");
+        deleteIcone.classList.add("fas", "fa-trash-can");
+        deleteDiv.appendChild(deleteIcone);
+        // ajout d'image dans l'article
+        const img=document.createElement("img");
+        img.src=work.imageUrl
+        articleImage.appendChild(img)
+        // Ajout de l'événement de suppression
+        deleteDiv.addEventListener("click", () => {
+            // Récupérer l'ID de l'image à supprimer
+            const imageId = work.id;
+            // Appeler la fonction pour supprimer l'image
+            supprimerImage(imageId);
+        });
+    });
+}
 function preparerFormAjout() {
     if (!document.querySelector("#formAjoutImage")) {
         const formAjoutImage = document.createElement("form");
@@ -135,7 +252,6 @@ function preparerFormAjout() {
         <div class="separLine"></div>
         <button id="btnValidationAjoutImage" type="submit"> Valider </button>`;
         windowModalAjout.appendChild(formAjoutImage);
-
         formAjoutImage.addEventListener("submit", (event) => {
             event.preventDefault();
             ajoutImage();
@@ -143,7 +259,6 @@ function preparerFormAjout() {
         addFileInputEventListener();
     }
 }
-
 function resetForm() {
     document.getElementById("formAjoutImage").reset();
     const spaceImage = document.querySelector(".spaceImage");
@@ -158,7 +273,6 @@ function resetForm() {
         imagePreview.remove();
     }
 }
-
 function addFileInputEventListener() {
     const fileImage = document.querySelector('#fileImage');
     const spaceImage = document.querySelector(".spaceImage");
@@ -187,7 +301,7 @@ function addFileInputEventListener() {
         }
     });
 }
-
+//-----------------------------------------------------------------AJOUT IMAGE
 async function ajoutImage() {
     const formAjoutImage = document.querySelector("#formAjoutImage");
     const fileInput = formAjoutImage.querySelector("#fileImage");
@@ -232,7 +346,6 @@ async function ajoutImage() {
     }
     }
 }
-
 function ajouterImageSurInterface(work) {
     // Créer un nouvel élément article pour la nouvelle image
     const articleElement = document.createElement("article");
@@ -249,7 +362,6 @@ function ajouterImageDansModal(work) {
         <h3>${work.title}</h3>`;
     modalContent.appendChild(articleElement);
 }
-
 function afficherAlerte(message) {
     const modal = document.getElementById("customAlert");
     const messageBox = document.getElementById("customAlertMessage");
@@ -259,162 +371,20 @@ function afficherAlerte(message) {
   setTimeout(function() {
     modal.style.display = "none";
   }, 3000)
-  }
-
-// -------------------------------------------------------- USER DISPLAY
-
-function afficherImagesSurInterface(works) {
-    conteneurImages.innerHTML = "";
-    works.forEach(work => {
-        const articleElement = document.createElement("article");
-        articleElement.innerHTML = `
-            <img src="${work.imageUrl}" alt="${work.title}">
-            <h3>${work.title}</h3>`;
-        conteneurImages.appendChild(articleElement);
-    });
 }
-
-// --------------------------------------------------------------- FILTERS
-
-const buttonTous = document.querySelector(".btn-tous");
-buttonTous.addEventListener("click", () => {
-    // Afficher toutes les images sur l'interface utilisateur
-    afficherImagesSurInterface(works);
-});
-const buttonObjets = document.querySelector(".btn-objets");
-buttonObjets.addEventListener("click", () => {
-    // Filtrer les œuvres qui ont la catégorie "Objets"
-    const filteredObjets = works.filter(work => work.category.name === "Objets");
-    // Afficher les images filtrées sur l'interface utilisateur
-    afficherImagesSurInterface(filteredObjets);
-});
-const buttonAppart = document.querySelector(".btn-appart");
-buttonAppart.addEventListener("click", () => {
-    // Filtrer les œuvres qui ont la catégorie "Appart"
-    const filteredAppart = works.filter(work => work.category.name === "Appartements");
-    // Afficher les images filtrées sur l'interface utilisateur
-    afficherImagesSurInterface(filteredAppart);
-});
-const buttonHotel = document.querySelector(".btn-hotel");
-buttonHotel.addEventListener("click", () => {
-    // Filtrer les œuvres qui ont la catégorie "Hotel"
-    const filteredHotel = works.filter(work => work.category.name === "Hotels & restaurants");
-    // Afficher les images filtrées sur l'interface utilisateur
-    afficherImagesSurInterface(filteredHotel);
-});
-
-// Animation button filters
-
-document.addEventListener("DOMContentLoaded", function () {
-    const filterItems = document.querySelectorAll(".filter-item");
-    filterItems.forEach(item => {
-        item.addEventListener("click", function () {
-            // Retirer la classe "active" de tous les éléments
-            filterItems.forEach(item => item.classList.remove("active"));
-            // Ajouter la classe "active" à l'élément cliqué
-            this.classList.add("active");
-            // Appeler la fonction pour appliquer le filtre correspondant
-            const category = this.getAttribute("data-category");
-            filterImages(category);
-        });
-    });
-    // Fonction pour appliquer le filtre correspondant
-    function filterImages(category) {
-        // Ajoutez ici le code pour filtrer les images en fonction de la catégorie
-        // Utilisez la variable "works" ou la méthode appropriée selon votre implémentation
-        console.log("Filtrer les images par catégorie :", category);
-    }
-});
-
-//-------------------------------------ADMIN---------------------------------------------------
-
-//---------------------------------------------------------Display admin
-
-// fonction pour faire apparaitre les options de l'admin
-function displayAdmin() {  
-    // faire disparaitre les filtres
-    document.querySelector("#filters").style.display = "none";
-    // faire apparaitre les éléments créé dans index.html
-    bannerEdit.style.display="flex";
-    modifyButton.style.display="flex";
-
-    const log = document.getElementById("log");
-    log.innerText="logout";
-    log.setAttribute("href", "index.html");
-    log.addEventListener("click", logoutHandler);
-        }
-
-// fonction pour gérer la déconnexion
-function logoutHandler(event) {
-    localStorage.removeItem("Token");
-    alert("Vous êtes déconnecté.");
-    const log = document.getElementById("log");
-    log.removeEventListener("click", logoutHandler);
-    log.innerText = "login"; 
-}     
-
-// condition de vérification du login
-const storedToken = localStorage.getItem("Token");
-const TokenExpiration = localStorage.getItem("TokenExpiration");
-if (storedToken && TokenExpiration && Date.now() < TokenExpiration){
-    displayAdmin()
-}
-
-//------------------------------------------------------ Modal gallery  
-    
-//afficher les img dans la modal
-function afficherImagesDansModal(works){
-    console.log("Fonction afficherImagesDansModal appelée avec :", works);
-    //effacer le contenu de la div
-    modalContent.innerHTML="";
-    // Parcourir les images et créer des balises <img> pour chaque image
-    works.forEach(work => {
-        const articleImage = document.createElement("article");
-        modalContent.appendChild(articleImage);
-        articleImage.classList=work.category.name
-        articleImage.setAttribute("id",work.id)
-        // Ajout d'une div noire dans le coin en haut à droite
-        const deleteDiv = document.createElement("div");
-        deleteDiv.classList.add("deleteDiv");
-        articleImage.appendChild(deleteDiv);
-        // ajout de l'icone de suppression
-        const deleteIcone = document.createElement("i");
-        deleteIcone.classList.add("fas", "fa-trash-can");
-        deleteDiv.appendChild(deleteIcone);
-        // ajout d'image dans l'article
-        const img=document.createElement("img");
-        img.src=work.imageUrl
-        articleImage.appendChild(img)
-        // Ajout de l'événement de suppression
-        deleteDiv.addEventListener("click", () => {
-            // Récupérer l'ID de l'image à supprimer
-            const imageId = work.id;
-            // Appeler la fonction pour supprimer l'image
-            supprimerImage(imageId);
-        });
-    });
-}
-
-
-
-// API-------------------------------------Suppression d'image dans la gallery
-
+//----------------------------------------------------------SUPPRESSION IMAGE
 function supprimerImage(imageId) {
     // Afficher la boîte de dialogue de confirmation
     afficherConfirmationSuppression(imageId);
 }
-
 function afficherConfirmationSuppression(imageId) {
     const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cette image ?");
     if (confirmation) {
-        // Si l'utilisateur clique sur "Oui", supprimez l'image
         supprimerImageConfirmed(imageId);
     } else {
-        // Si l'utilisateur clique sur "Non", ne faites rien
         return;
     }
 }
-
 function supprimerImageConfirmed(imageId) {
     // Récupérer le token
     const token = localStorage.getItem("Token");
