@@ -48,6 +48,27 @@ const titleModalAjout = document.createElement("h4")
 
 // ---------------------------------- USER DISPLAY ---------------------------
 
+function recupererImagesDepuisAPI() {
+    const urlAPI = "http://localhost:5678/api/works";
+    return fetch(urlAPI)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur de récupération des images : ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // une fois donnée récupere, les stocker dans une variable works
+            works=data
+        // Une fois les images récupérées, les afficher sur l'interface utilisateur
+            afficherImagesSurInterface(works);
+            afficherImagesDansModal(works);
+        })
+        .catch(error => {
+            console.error("Erreur lors de la récupération des images depuis l'API :", error);
+        });
+}
+
 function afficherImagesSurInterface(works) {
     conteneurImages.innerHTML = "";
     works.forEach(work => {
@@ -99,27 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fonction pour appliquer le filtre correspondant
     function filterImages(category) {}
 });
-
-function recupererImagesDepuisAPI() {
-    const urlAPI = "http://localhost:5678/api/works";
-    return fetch(urlAPI)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erreur de récupération des images : ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // une fois donnée récupere, les stocker dans une variable works
-            works=data
-        // Une fois les images récupérées, les afficher sur l'interface utilisateur
-            afficherImagesSurInterface(works);
-            afficherImagesDansModal(works);
-        })
-        .catch(error => {
-            console.error("Erreur lors de la récupération des images depuis l'API :", error);
-        });
-}
 
 // ---------------------------------------------------------ADDEVENTLISTENER
 
